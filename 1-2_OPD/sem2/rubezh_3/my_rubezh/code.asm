@@ -12,7 +12,6 @@
 ;- Результатом является одно 32-х разрядное число!
 ;Примечание: все числа представлены в десятичной системе счисления, если явно не указано иное.
 
-ORG 0
 START:
 CYCLE:
     LD CURID
@@ -44,7 +43,7 @@ XORINGH:
     ST TMP
     LD CURH
     AND XORH
-    NEG
+    NOT
     AND TMP
     ST XORH
 NEXT:
@@ -77,15 +76,15 @@ EXT_NEG:
 LEN: WORD 21
 PTR: WORD 0x6CC
 NEW_PTR: WORD 0x400
-CURL: WORD 0x0
-CURH: WORD 0x0
-XORL: WORD 0x0; изначально ставим ноль, с 1-м числом ксор даст само число
-XORH: WORD 0x0
-TMP: WORD 0x0
-CURID: WORD 0x11;3
+CURL: WORD 0
+CURH: WORD 0
+XORL: WORD 0; изначально ставим ноль, с 1-м числом ксор даст само число
+XORH: WORD 0
+TMP: WORD 0
+CURID: WORD 3
 BITM: WORD 0x0004; причём маска для старшего слова
 POSM: WORD 0x0003
-NEGM: WORD 0xFFFA
+NEGM: WORD 0xFFFC
 
 ; TEST DATA
 ;ORG 0x6CC
@@ -95,3 +94,7 @@ NEGM: WORD 0xFFFA
 ;WORD 2 DUP (243); X5 SKIP
 ;X6: WORD 0x5555
 ;    WORD 0x6666
+
+; EXPECTED TEST RESULTS:
+;
+; FFFD_2D55

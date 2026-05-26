@@ -42,7 +42,7 @@
 Сводку всех исправлений можно увидеть по ссылке:
 [Merge pull request #2 from sergeypugin/rubezh_fixes · sergeypugin/ITMO@4dbcd17](https://github.com/sergeypugin/ITMO/commit/4dbcd17f1283ec2c9da8a6f9414a0e578b1e180e)
 
-Разберём их все, разбив на два типа - ошибки и косметические улучшения.
+Разберём их все, разбив на два типа: ошибки и косметические улучшения.
 ### Ошибки
 #### Ошибка №1: NOT -> NEG
 

@@ -1,0 +1,65 @@
+---
+config:
+  layout: elk
+  theme: base
+---
+erDiagram
+	direction RL
+	astronaut {
+		serial id PK ""  
+		varchar20 first_name  "NOT NULL"  
+		varchar20 last_name  "NOT NULL"  
+		smallint satisfaction_level  "CHECK 0..10"  
+	}
+
+	spaceship {
+		serial id PK ""  
+		varchar20 name  "UNIQUE NOT NULL"  
+		boolean is_finished  "NOT NULL DEFAULT false"  
+		integer plan_id FK "NOT NULL"  
+	}
+
+	role {
+		serial id PK ""  
+		varchar50 role_name  "UNIQUE NOT NULL"  
+	}
+
+	hatch {
+		serial id PK ""  
+		integer spaceship_id FK "NOT NULL"  
+		boolean is_opened  "NOT NULL DEFAULT false"  
+	}
+
+	transition {
+		serial id PK ""  
+		integer spaceship_id FK "NOT NULL"  
+		boolean is_tight  "NOT NULL DEFAULT false"  
+	}
+
+	work_experience {
+		serial id PK ""  
+		integer astronaut_id FK "NOT NULL"  
+		integer spaceship_id FK "NOT NULL"  
+		integer role_id FK "NULL → SET NULL"  
+		integer duration_months  "CHECK >=0 DEFAULT 0"  
+	}
+
+	study_drawing {
+		integer astronaut_id PK,FK "NOT NULL"  
+		integer plan_id PK,FK "NOT NULL"  
+		smallint success_rate  "CHECK 1..10"  
+	}
+
+	plan {
+		serial id PK ""  
+		varchar50 title  "NOT NULL"  
+	}
+
+	astronaut||--o{study_drawing:"studies"
+	plan||--o{study_drawing:"referenced in"
+	astronaut||..o{work_experience:"has"
+	spaceship||..o{hatch:"has"
+	spaceship||..o{transition:"has"
+	spaceship||..o{work_experience:"involves"
+	plan||..o{spaceship:"built by"
+	role|o..o{work_experience:"assigned as"

@@ -1,0 +1,57 @@
+---
+config:
+  layout: elk
+  theme: base
+---
+erDiagram
+	direction RL
+	ASTRONAUT {
+		int id PK ""  
+		string first_name  ""  
+		string last_name  ""  
+		int satisfaction_level  ""  
+	}
+
+	PLAN {
+		int id PK ""  
+		string title  ""  
+	}
+
+	SPACESHIP {
+		int id PK ""  
+		string name  ""  
+		bool is_finished  ""  
+	}
+
+	ROLE {
+		int id PK ""  
+		string role_name  ""  
+	}
+
+	HATCH {
+		int id PK ""  
+		bool is_opened  ""  
+	}
+
+	TRANSITION {
+		int id PK ""  
+		bool is_tight  ""  
+	}
+
+	WORK_EXPERIENCE {
+		int id PK ""  
+		int duration_months  ""  
+	}
+
+	STUDY_DRAWING {
+		int success_rate  ""  
+	}
+
+	ASTRONAUT||--o{WORK_EXPERIENCE:"has"
+	ASTRONAUT||--o{STUDY_DRAWING:"studies"
+	SPACESHIP||--o{HATCH:"has"
+	SPACESHIP||--o{TRANSITION:"has"
+	SPACESHIP||--o{WORK_EXPERIENCE:"involves"
+	PLAN||--o{SPACESHIP:"built by"
+	PLAN||--o{STUDY_DRAWING:"referenced in"
+	ROLE|o--o{WORK_EXPERIENCE:"assigned as"

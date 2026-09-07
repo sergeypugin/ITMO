@@ -1,4 +1,4 @@
-## **HTTP** - _HyperText Transfer Protocol_
+## HTTP - _HyperText Transfer Protocol_
 ### URI, URL и URN
 
 | Термин                            | Определение                                                                               | Вид                                                                                 |
@@ -29,28 +29,48 @@
 - «4» – Client error – ошибка клиента;
 - «5» – Server error – ошибка сервера.
 
-
 ## Code
 
 >Ниже приведены ссылки на то, что стоит прочитать
 #### HTML - _HyperText Markup Language_
-* [Основы форм в HTML](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_forms) – структура тега `<form>`, атрибуты и организация полей.
-* [Базовые элементы управления](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Basic_native_form_controls) – как работают текстовые поля ввода `<input type="text">`, выпадающие списки `<select>` и кнопки.
-* [Валидация форм](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation) – концепция перехвата и проверки данных перед отправкой.
 
+- [Базовый синтаксис HTML — Изучите веб-разработку | MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax)
+- Шпоргалки по синтаксису
+	- [HTML-шпаргалка для синтаксиса и распространённых задач - HTML | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Cheatsheet)
+	* [Базовые элементы управления](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Basic_native_form_controls)
 #### CSS - _Cascading Style Sheets_
-* [Базовые селекторы](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors) – селекторы по классу (`.class`) и идентификатору (`#id`).
-* [Комбинаторы](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Combinators) – как работает селектор дочерних элементов (`parent > child`), который строго требует ваш вариант.
-* [Псевдоклассы](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Pseudo_classes_and_elements) – как использовать псевдоэлементы `::before` и `::after` (тоже обязательное требование).
-* [Каскад](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Handling_conflicts) – приоритеты правил, наследование стилей от предков к потомкам.
-* [Блочная модель](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model) – как работают `margin`, `padding` и почему размеры задаются в процентах.
+- [Начало работы с CSS — изучение веб-разработки | MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Getting_started)
+- [Селекторы CSS - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Styling_basics/Basic_selectors)
+- [Блочная модель - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Styling_basics/Box_model)
+- [Псевдоклассы, псевдоэлементы - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Styling_basics/Pseudo_classes_and_elements)
 
-#### Canvas API
-* [Рисование на Canvas](https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Create_the_Canvas_and_draw_on_it) – практичный пошаговый пример создания холста, рисования линий, прямоугольников и дуг.
-* [Учебник по Canvas API](https://developer.mozilla.org/ru/docs/Web/API/Canvas_API/Tutorial) – подробный справочник методов рисования.
+>Также важно где-то бы узнать, что такое селекторы и комбинаторы, но на MDN статьи ещё не готовы. Это вам на самостоятельное изучение.
+
+По поводу стилей очень удобна следующая схема, чтобы разобраться во всяких `padding`:
+```text
++------------------------------------+
+|               MARGIN               |  <- Внешний отступ (отталкивает соседей)
+|   +----------------------------+   |
+|   |           BORDER           |   |  <- Рамка (граница элемента)
+|   |   +--------------------+   |   |
+|   |   |      PADDING       |   |   |  <- "Набивка" (отступ вокруг текста)
+|   |   |   +------------+   |   |   |
+|   |   |   |  CONTENT   |   |   |   |  <- Сам текст или картинка
+|   |   |   +------------+   |   |   |
+|   |   +--------------------+   |   |
+|   +----------------------------+   |
++------------------------------------+
+```
 
 #### JavaScript
-* [DOM](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/DOM_scripting) – как находить элементы на странице и менять их содержимое.
-* [События](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Events) – перехват кликов по кнопкам и события отправки формы `submit`.
-* [localStorage](https://developer.mozilla.org/ru/docs/Web/API/Window/localStorage) – сохранение истории проверок между перезагрузками страницы.
-* [Intl](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) – встроенный инструмент браузера для форматирования даты и времени с учётом часового пояса и русской локализации (`ru-RU`).
+
+- [Первое погружение в JavaScript - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Scripting/A_first_splash)
+- [Управление документами - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Scripting/DOM_scripting)
+- [Введение в события - Изучение веб-разработки | MDN](https://developer.mozilla.org/ru/docs/Learn_web_development/Core/Scripting/Events)
+- Специально для лабы:
+	- [Window.localStorage - Интерфейсы веб API | MDN](https://developer.mozilla.org/ru/docs/Web/API/Window/localStorage)
+	- [Intl.DateTimeFormat - JavaScript | MDN](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+
+##### Canvas API
+- [Создание Canvas и рисование на нём - Разработка игр | MDN](https://developer.mozilla.org/ru/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Create_the_Canvas_and_draw_on_it)
+

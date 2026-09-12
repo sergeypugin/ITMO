@@ -1,0 +1,192 @@
+:root {
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #cbd5e1;
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --color-green: #16a34a;
+  --color-red: #dc2626;
+
+  --graph-figure: rgba(37, 99, 235, 0.5);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-page);
+  background-image: url('../images/background.webp');
+  color: var(--text-main);
+  font-family: sans-serif;
+}
+
+#header {
+  font-family: cursive;
+  font-size: 16px;
+  color: var(--accent);
+  text-align: center;
+  padding: 16px;
+}
+
+#header > .author {
+  margin: 0 0 8px 0;
+}
+
+.group,
+.var {
+  display: inline-block;
+  margin: 0 8px 0;
+  color: var(--text-muted);
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1 1 400px;
+  max-width: 460px;
+}
+
+.card > h2::before {
+  content: "• ";
+  color: var(--accent);
+}
+
+#graph {
+  display: block;
+  margin: auto;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+}
+
+.form-row {
+  margin-bottom: 4%;
+}
+
+.form-row > label {
+  display: block;
+  margin-bottom: 2%;
+  font-weight: bold;
+}
+
+.form-row > input[type="text"],
+.form-row > select {
+  width: 100%;
+  padding: 3%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+}
+
+.y-btn {
+  flex: 1 0 28%;
+  padding: 3%;
+  margin: 1% 0;
+  background-color: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.y-btn:hover {
+  background-color: var(--border-color);
+}
+
+.y-btn.active {
+  background-color: var(--accent);
+  color: var(--bg-card);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 3.5%;
+  background-color: var(--accent);
+  color: var(--bg-card);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: var(--accent-hover);
+}
+/*TODO: check*/
+.error {
+  color: var(--color-red);
+  margin: 2% 0;
+  min-height: 1.2em;
+}
+
+.results {
+  max-width: 944px;
+  margin: 24px auto 0 auto;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+#clear-btn {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: var(--color-red);
+  border: 1px solid var(--color-red);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#clear-btn:hover {
+  background-color: var(--color-red);
+  color: var(--bg-card);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hit-yes {
+  color: var(--color-green);
+  font-weight: bold;
+}
+
+.hit-no {
+  color: var(--color-red);
+  font-weight: bold;
+}

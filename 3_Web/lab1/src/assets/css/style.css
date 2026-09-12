@@ -105,6 +105,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .y-btn:hover {
@@ -160,6 +161,12 @@ body {
   border: 1px solid var(--color-red);
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#clear-btn:hover {
+  background-color: var(--color-red);
+  color: var(--bg-card);
 }
 
 table {

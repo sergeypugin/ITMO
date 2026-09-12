@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Лабораторная работа №1 | Веб-программирование</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!--<style>
+        /* TODO: сюда нужно будет добавить стили, если надо строго по ТЗ */
+    </style>-->
+    <script type="module" src="assets/js/main.js"></script>
+  </head>
+  <body>
+    <header id="header">
+      <h1 class="author">Пугин Сергей Евгеньевич</h1>
+      <div class="group">Группа: P3219</div>
+      <div class="var">Вариант: 22653</div>
+    </header>
+
+    <main class="content">
+      <section class="card graph">
+        <h2>График</h2>
+        <canvas id="graph" width="400" height="400">
+          В вашем браузере Canvas не поддерживается
+        </canvas>
+      </section>
+
+      <section class="card points">
+        <h2>Параметры точки</h2>
+        <form id="point-form" novalidate>
+          <div class="form-row x">
+            <label for="x-val">Координата X (-3 ... 3):</label>
+            <input
+              type="text"
+              id="x-val"
+              name="x"
+              placeholder="Введите число от -3 до 3"
+              autocomplete="off"
+            />
+          </div>
+          <div class="form-row y">
+            <label>Координата Y:</label>
+            <div class="buttons-row">
+              <button type="button" class="y-btn" value="-3">-3</button>
+              <button type="button" class="y-btn" value="-2">-2</button>
+              <button type="button" class="y-btn" value="-1">-1</button>
+              <button type="button" class="y-btn" value="0">0</button>
+              <button type="button" class="y-btn" value="1">1</button>
+              <button type="button" class="y-btn" value="2">2</button>
+              <button type="button" class="y-btn" value="3">3</button>
+              <button type="button" class="y-btn" value="4">4</button>
+              <button type="button" class="y-btn" value="5">5</button>
+            </div>
+            <input type="hidden" id="y-val" name="y" value="" />
+          </div>
+          <div class="form-row r">
+            <label for="r-val">Радиус R:</label>
+            <select id="r-val" name="r">
+              <option value="" disabled selected>Выберите радиус</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+          <div id="error-box" class="error"></div>
+
+          <button type="submit" class="submit-btn">Проверить</button>
+        </form>
+      </section>
+    </main>
+
+    <section class="results">
+      <div class="toolbar">
+        <h2>Результаты проверок</h2>
+        <button type="button" id="clear-btn">Очистить историю</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>X</th>
+            <th>Y</th>
+            <th>R</th>
+            <th>Попадание</th>
+            <th>Время </th>
+          </tr>
+        </thead>
+        <tbody id="history"></tbody>
+      </table>
+    </section>
+  </body>
+</html>

@@ -53,15 +53,15 @@ CREATE TABLE study_drawing (
 
 
 
-INSERT INTO astronaut (first_name, last_name, satisfaction_level) VALUES 
+INSERT INTO astronaut (first_name, last_name, satisfaction_level) VALUES
 (null, 'Curnow', 10),
 ('Max', 'Brailovsky', 5);
 INSERT INTO plan (title) VALUES
 ('Discovery Main Plan'),
 ('Discovery-2 Construction Plan');
-INSERT INTO spaceship (name, is_finished, plan_id) VALUES 
+INSERT INTO spaceship (name, is_finished, plan_id) VALUES
 ('Discovery', true, 1),
 ('Discovery-2', false, 2);
 INSERT INTO role (role_name) VALUES ('Engineer'), ('Navigator');
-INSERT INTO work_experience (astronaut_id, spaceship_id, role_id, duration_months) VALUES 
+INSERT INTO work_experience (astronaut_id, spaceship_id, role_id, duration_months) VALUES
 (1, 1, 1, 2), (2, 1, 2, 0);

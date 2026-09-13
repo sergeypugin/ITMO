@@ -70,7 +70,7 @@ EXT_NEG:
     OR NEGM
     ST CURH
     RET
-    
+
 ;DATA
 
 LEN: WORD 21

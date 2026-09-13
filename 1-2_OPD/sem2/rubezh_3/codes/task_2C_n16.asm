@@ -71,7 +71,7 @@ EXT_NEG:
     OR NEGM
     ST CURH
     RET
-    
+
 ;DATA
 
 LEN: WORD 4; Исправить в итоге нужно на 21

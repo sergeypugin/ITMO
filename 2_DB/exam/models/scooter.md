@@ -74,7 +74,7 @@ erDiagram
         integer duration_min "NN DEFAULT 0 CHECK duration_min>=0"
         numeric cost "NN DEFAULT 0 CHECK cost>=0"
     }
-    
+
     SCOOTER ||..o{ TRIP : "используется в"
     TARIFF ||..o{ TRIP : "применяется к"
     CLIENT ||..o{ DEVICE : "использует"
@@ -92,7 +92,7 @@ erDiagram
 
 Создадим триггер:
 ``` SQL
-CREATE OR REPLACE FUNCTION check_scooter_status() 
+CREATE OR REPLACE FUNCTION check_scooter_status()
 RETURNS trigger AS $$
 DECLARE
     scooter_battery integer;
@@ -156,44 +156,44 @@ CREATE INDEX idx_trip_cost ON TRIP USING btree(cost);
 ``` mermaid
 flowchart BT
     res([result])
-    
+
     %% Финальная проекция выводит только то, что просили в SELECT
     proj_final(["π C.name, C.surname, T.cost, S.id"])
-    
+
     join2(["⋈ T.scooter_id = S.id"])
     join1(["⋈ T.cli_id = C.id"])
-    
+
     %% Ранняя проекция для самоката (оставляем только ID)
     proj_scooter(["π S.id"])
     %%scooter["Scooter (S)"]%%
 	scooter["Index Scan <br> SCOOTER (scooter_pkey)"]
-    
+
     %% Ранняя проекция для клиента (только имя, фамилия и ID для связи)
     proj_client(["π C.id, C.name, C.surname"])
     %%client["Client (C)"]%%
     client["Index Scan <br> CLIENT (client_pkey)"]
-	
+
     %% Ранняя проекция для поездки (только нужные для связей и фильтра поля)
     proj_trip(["π T.scooter_id, T.cli_id, T.cost"])
     sel1(["σ T.cost > 500"])
     %%trip["Trip (T)"]%%
 	trip["Index Scan <br> TRIP (idx_trip_cost)"]
-    
+
     %% Связи
     trip --> sel1
     sel1 --> proj_trip
-    
+
     client --> proj_client
-    
+
     %% Соединяем уже обрезанные таблицы
     proj_trip --> join1
     proj_client --> join1
-    
+
     scooter --> proj_scooter
-    
+
     join1 --> join2
     proj_scooter --> join2
-    
+
     join2 --> proj_final
     proj_final --> res
 ```

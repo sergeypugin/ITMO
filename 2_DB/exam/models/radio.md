@@ -65,7 +65,7 @@ erDiagram
     ROLE ||..o{ EMPLOYEE : "имеет"
     ARTIST ||..o{ PLAYLIST : "создает"
     PLAYLIST ||..o{ TRACK : "включает"
-    
+
     %% Связи к таблице-трансляции (неидентифицирующие)
     TRACK ||..o{ BROADCAST : "звучит в"
     STUDIO ||..o{ BROADCAST : "проводит"
@@ -80,19 +80,19 @@ erDiagram
 
 Создадим триггер:
 ```SQL
-CREATE OR REPLACE FUNCTION check_studio_active() 
+CREATE OR REPLACE FUNCTION check_studio_active()
 RETURNS trigger AS $$
 DECLARE
     v_is_active boolean;
 BEGIN
-    SELECT is_active INTO v_is_active 
-    FROM STUDIO 
+    SELECT is_active INTO v_is_active
+    FROM STUDIO
     WHERE id = NEW.studio_id;
-    
+
     IF v_is_active = false THEN
         RAISE EXCEPTION 'Нельзя выпустить трек в эфир: студия неактивна!';
     END IF;
-    
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -126,7 +126,7 @@ FOR EACH ROW EXECUTE FUNCTION check_studio_active();
 Предположим, что нам нужно узнать названия музыкальных треков и время их запуска для всех эфиров, которые проводились в студии под названием 'Lalaland'.
 
 ```SQL
-SELECT T.title AS track_title, B.start_time 
+SELECT T.title AS track_title, B.start_time
 FROM BROADCAST B
 INNER JOIN TRACK T ON T.id = B.track_id
 INNER JOIN STUDIO S ON S.id = B.studio_id
@@ -146,38 +146,38 @@ CREATE INDEX idx_broadcast_studio ON BROADCAST USING hash(studio_id);
 ```mermaid
 flowchart BT
     res([Result])
-    
+
     %% Финальная проекция
     proj_final(["π T.title, B.start_time"])
-    
+
     join1(["⋈ B.track_id = T.id"])
     join_st(["⋈ B.studio_id = S.id"])
-    
+
     %% Возвращаемся к стандартным таблицам на листьях и ранним проекциям
     track["Track (T)"]
     proj_track(["π T.id, T.title"])
-    
+
     broadcast["Broadcast (B)"]
     proj_broadcast(["π B.studio_id, B.track_id, B.start_time"])
-    
+
     studio["Studio (S)"]
     sel1(["σ S.name = 'Lalaland'"])
     proj_studio(["π S.id"])
-    
+
     %% Построение левостороннего конвейера
     studio --> sel1
     sel1 --> proj_studio
-    
+
     broadcast --> proj_broadcast
-    
+
     proj_studio --> join_st
     proj_broadcast --> join_st
-    
+
     track --> proj_track
-    
+
     join_st --> join1
     proj_track --> join1
-    
+
     join1 --> proj_final
     proj_final --> res
 ```

@@ -34,7 +34,7 @@ body {
   padding: 16px;
 }
 
-#header > .author {
+#header>.author {
   margin: 0 0 8px 0;
 }
 
@@ -61,7 +61,7 @@ body {
   max-width: 460px;
 }
 
-.card > h2::before {
+.card>h2::before {
   content: "• ";
   color: var(--accent);
 }
@@ -77,14 +77,14 @@ body {
   margin-bottom: 4%;
 }
 
-.form-row > label {
+.form-row>label {
   display: block;
   margin-bottom: 2%;
   font-weight: bold;
 }
 
-.form-row > input[type="text"],
-.form-row > select {
+.form-row>input[type="text"],
+.form-row>select {
   width: 100%;
   padding: 3%;
   border: 1px solid var(--border-color);
@@ -130,6 +130,7 @@ body {
 .submit-btn:hover {
   background-color: var(--accent-hover);
 }
+
 /*TODO: check*/
 .error {
   color: var(--color-red);

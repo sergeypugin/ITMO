@@ -64,7 +64,7 @@ erDiagram
 
     ROLE ||..o{ EMPLOYEE : "имеет"
     REGION ||..o{ CITY : "включает"
-    
+
     %% Связи Banyak-to-Many к таблице FORECAST
     CITY ||..o{ FORECAST : "получает"
     STATION ||..o{ FORECAST : "генерирует"
@@ -78,7 +78,7 @@ erDiagram
 
 Предположим, что мы не хотим, чтобы в `FORECAST` можно было добавлять прогнозы по прошлому. Сделаем для этого следующий триггер:
 ``` SQL
-CREATE OR REPLACE FUNCTION prevent_past_forecast_updates() 
+CREATE OR REPLACE FUNCTION prevent_past_forecast_updates()
 RETURNS trigger AS $$
 BEGIN
     IF NEW.target_time <= current_timestamp THEN
@@ -130,39 +130,39 @@ CREATE INDEX idx_forecast_temp ON FORECAST USING btree(temp_celsius);
 ```mermaid
 flowchart BT
     res([Result])
-    
+
     %% Финальная проекция выводит только столбцы из SELECT
     proj_final(["π C.name, S.name, F.temp_celsius, F.probability, F.target_time"])
-    
+
     join2(["⋈ F.city_id = C.id"])
     join1(["⋈ F.station_id = S.id"])
-    
+
     %% Ранняя проекция для города (только ID для связи и Name для вывода)
     proj_city(["π C.id, C.name"])
     city["City (C)"]
-    
+
     %% Ранняя проекция для станции (только ID для связи и Name для вывода)
     proj_station(["π S.id, S.name"])
     station["Station (S)"]
-    
+
     %% Ранняя проекция для прогнозов (только ID связей и нужные в SELECT поля)
     proj_forecast(["π F.station_id, F.city_id, F.temp_celsius, F.probability, F.target_time"])
     sel1(["σ F.temp_celsius < -30"])
     forecast["Forecast (F)"]
-    
+
     forecast --> sel1
     sel1 --> proj_forecast
-    
+
     station --> proj_station
-    
+
     proj_forecast --> join1
     proj_station --> join1
-    
+
     city --> proj_city
-    
+
     join1 --> join2
     proj_city --> join2
-    
+
     join2 --> proj_final
     proj_final --> res
 ```

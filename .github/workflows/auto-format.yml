@@ -1,0 +1,45 @@
+name: Auto Format with EditorConfig
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Для PR забираем исходную ветку автора, для push — текущую
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # 1. Форматируем синтаксис HTML, CSS и JS как в языковом сервере
+      - name: Format code structure
+        run: npx js-beautify -r --indent-size 2 "**/*.html" "**/*.css" "**/*.js"
+
+      # 2. По `.editorconfig` исправляем стиль
+      - name: Fix EditorConfig rules
+        run: npx eclint fix "**/*"
+
+      # 3. Откатываем правки в файлах воркфлоу, т.к. им не разрешен доступ на перезапись воркфлоу
+      - name: Revert workflow modifications
+        run: git checkout -- .github/workflows/ || true
+
+      # 4. Автоматически коммитим изменения
+      - name: Auto-commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-format via `.editorconfig` [skip ci]"
+          # Используется [skip ci], чтобы предотвратить рекурсивный запуск
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"

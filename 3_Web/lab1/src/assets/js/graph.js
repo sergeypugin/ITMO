@@ -15,8 +15,8 @@ const CONFIG = {
 function getStyleColor(variableName, fallback) {
   return (
     getComputedStyle(document.documentElement)
-      .getPropertyValue(variableName)
-      .trim() || fallback
+    .getPropertyValue(variableName)
+    .trim() || fallback
   );
 }
 
@@ -101,15 +101,46 @@ export function renderCanvas(rValue = null, points = []) {
     const rLabel = rValue ? rValue : "R";
     const halfRLabel = rValue ? rValue / 2 : "R/2";
 
-    const marks = [
-      { dx: -CONFIG.scale, dy: 0, text: `-${rLabel}` },
-      { dx: -CONFIG.scale / 2, dy: 0, text: `-${halfRLabel}` },
-      { dx: CONFIG.scale / 2, dy: 0, text: `${halfRLabel}` },
-      { dx: CONFIG.scale, dy: 0, text: `${rLabel}` },
-      { dx: 0, dy: -CONFIG.scale, text: `${rLabel}` },
-      { dx: 0, dy: -CONFIG.scale / 2, text: `${halfRLabel}` },
-      { dx: 0, dy: CONFIG.scale / 2, text: `-${halfRLabel}` },
-      { dx: 0, dy: CONFIG.scale, text: `-${rLabel}` },
+    const marks = [{
+        dx: -CONFIG.scale,
+        dy: 0,
+        text: `-${rLabel}`
+      },
+      {
+        dx: -CONFIG.scale / 2,
+        dy: 0,
+        text: `-${halfRLabel}`
+      },
+      {
+        dx: CONFIG.scale / 2,
+        dy: 0,
+        text: `${halfRLabel}`
+      },
+      {
+        dx: CONFIG.scale,
+        dy: 0,
+        text: `${rLabel}`
+      },
+      {
+        dx: 0,
+        dy: -CONFIG.scale,
+        text: `${rLabel}`
+      },
+      {
+        dx: 0,
+        dy: -CONFIG.scale / 2,
+        text: `${halfRLabel}`
+      },
+      {
+        dx: 0,
+        dy: CONFIG.scale / 2,
+        text: `-${halfRLabel}`
+      },
+      {
+        dx: 0,
+        dy: CONFIG.scale,
+        text: `-${rLabel}`
+      },
     ];
 
     ctx.beginPath();
@@ -152,9 +183,9 @@ export function renderCanvas(rValue = null, points = []) {
       ctx.fillStyle = p.hit ? green : red;
       ctx.fill();
       ctx.strokeStyle = textColor;
-      ctx.lineWidth = isLast
-        ? CONFIG.lastPointLineWidth
-        : CONFIG.pointLineWidth;
+      ctx.lineWidth = isLast ?
+        CONFIG.lastPointLineWidth :
+        CONFIG.pointLineWidth;
       ctx.stroke();
     });
   }

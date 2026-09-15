@@ -9,3 +9,7 @@ trim_trailing_whitespace = true
 [*.{html,css,js}]
 indent_style = space
 indent_size = 2
+
+[*.s]
+indent_style = space
+indent_size = 4

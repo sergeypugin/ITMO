@@ -1,0 +1,16 @@
+{
+  "languages": {
+    "Assembly": {
+      "formatter": {
+        "external": {
+          "command": "python3",
+          "arguments": [
+            "-c",
+            "import sys, os, subprocess, pathlib; f = pathlib.Path(sys.argv[1]); code = sys.stdin.read(); arch = f.parent.name; exe = f.parent.parent / '_exe' / ('wrench-fmt.exe' if os.name == 'nt' else 'wrench-fmt'); (f.write_text(code, encoding='utf-8'), subprocess.run([str(exe), str(f), '--isa', arch, '--inplace'], capture_output=True)) if exe.exists() and code else None; sys.stdout.write(f.read_text(encoding='utf-8') if exe.exists() and code else code)",
+            "{buffer_path}"
+          ]
+        }
+      }
+    }
+  }
+}

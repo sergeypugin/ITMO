@@ -1,0 +1,29 @@
+[
+  {
+    "label": "Format current Assembly",
+    "command": "$dir = (Get-Item .); if ($dir.FullName -like '*3_CSA*lab3*') { $arch = $dir.Name; ..\\_exe\\wrench-fmt.exe \"$ZED_FILENAME\" --isa $arch --inplace }",
+    "cwd": "$ZED_DIRNAME",
+    "save": "current",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "never"
+  },
+  {
+    "label": "Run current Assembly",
+    "command": "$dir = (Get-Item .); if ($dir.FullName -like '*3_CSA*lab3*') { $arch = $dir.Name; ..\\_exe\\wrench.exe \"$ZED_FILENAME\" --isa $arch -c \"$ZED_STEM.yaml\" } elseif ($dir.FullName -like '*3_PL*') { nasm -f elf64 -g \"$ZED_FILENAME\" -o \"$ZED_STEM.o\"; ld -o \"$ZED_STEM\" \"$ZED_STEM.o\"; ./\"$ZED_STEM\" }",
+    "cwd": "$ZED_DIRNAME",
+    "save": "current",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "Run Python Script",
+    "command": "python3 \"$ZED_FILENAME\"",
+    "cwd": "$ZED_DIRNAME",
+    "save": "current",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  }
+]

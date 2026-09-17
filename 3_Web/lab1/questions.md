@@ -1,3 +1,5 @@
+Ниже представлена теория, которой будет достаточно для того, чтобы сделать лабораторную работу №1. Более подробно можно изучить теорию [здесь](https://github.com/band-of-four/cheatsheets/blob/master/Internet-Applications-Development/Lab1.md).
+
 ## HTTP - _HyperText Transfer Protocol_
 ### URI, URL и URN
 

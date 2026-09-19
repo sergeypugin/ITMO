@@ -19,23 +19,4 @@
     "allow_concurrent_runs": false,
     "reveal": "always"
   },
-  {
-    //Works only with WSL on Windows
-    "label": "Run current NASM",
-    "command": "wsl bash -c \"nasm -f elf64 -g '$ZED_FILENAME' -o '$ZED_STEM.o' && ld -o '$ZED_STEM' '$ZED_STEM.o' && ./$ZED_STEM\"",
-    "cwd": "$ZED_DIRNAME",
-    "save": "current",
-    "use_new_terminal": false,
-    "reveal": "always"
-  },
-  {
-    //Works everywhere where Python is available
-    "label": "Run Python Script",
-    "command": "python3 \"$ZED_FILENAME\"",
-    "cwd": "$ZED_DIRNAME",
-    "save": "current",
-    "use_new_terminal": false,
-    "allow_concurrent_runs": false,
-    "reveal": "always"
-  }
 ]

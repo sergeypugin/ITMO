@@ -48,7 +48,7 @@ def caesar_cipher(input: str) -> tuple[str | list[int], str]:
 
         return "".join(result), remaining
 
-    except Exception():
+    except Exception:
         return [-1], input
 
 

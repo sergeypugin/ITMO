@@ -1,0 +1,10 @@
+{
+  "languages": {
+    "Assembly": {
+      "enable_language_server": true
+    }
+  },
+  "file_scan_inclusions": [
+    "3_PL"
+  ],
+}

@@ -1,0 +1,11 @@
+[
+  {
+    //Works only with WSL on Windows
+    "label": "Run current NASM",
+    "command": "nasm -f elf64 -g '$ZED_FILENAME' -o '$ZED_STEM.o' && ld -o '$ZED_STEM' '$ZED_STEM.o' && ./$ZED_STEM",
+    "cwd": "$ZED_DIRNAME",
+    "save": "current",
+    "use_new_terminal": false,
+    "reveal": "always"
+  },
+]

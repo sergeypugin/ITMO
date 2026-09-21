@@ -12,7 +12,7 @@
   {
     //Works only on Windows
     "label": "Run current Wrench Assembly",
-    "command": "$arch = (Get-Item .).Name; ..\\_exe\\wrench.exe \"$ZED_FILENAME\" --isa $arch -c \"$ZED_STEM.yaml\"",
+    "command": "$arch = (Get-Item .).Name; Get-ChildItem \"$ZED_STEM*.yaml\" | ForEach-Object { Write-Host \"> Running test: $($_.Name)\"; ..\\_exe\\wrench.exe \"$ZED_FILENAME\" --isa $arch -c \"$($_.Name)\"; Write-Host \"\" }",
     "cwd": "$ZED_DIRNAME",
     "save": "current",
     "use_new_terminal": false,

@@ -19,6 +19,10 @@ def rotate_left(val: int, n: int) -> list[int]:
     result = ((val32 << shift) | (val32 >> (32 - shift))) & 0xFFFFFFFF
     return [uint32_to_int32(result)]
 
+def uint32_to_int32(val32: int) -> int:
+    if val32 >= 0x80000000:
+        return val32 - 0x100000000
+    return val32
 
 assert rotate_left(1, 1) == [2]
 assert rotate_left(305419896, 4) == [591751041]

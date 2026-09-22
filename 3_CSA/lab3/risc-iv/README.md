@@ -1,8 +1,8 @@
 Вариант: `caesar_cipher`
 
 Условие:
-- [Ссылка на Wrench](https://github.com/ryukzak/wrench/blob/master/variants.md#caesar_cipher)
-- [Скачанное](caesar_cipher.py)
+- [variants.md#caesar_cipher](https://github.com/ryukzak/wrench/blob/master/variants.md#caesar_cipher)
+- [docs/risc-iv](https://github.com/ryukzak/wrench/blob/master/docs/risc-iv.md)
 
 Решение:
 - [Код на ассемблере](caesar_cipher.s)

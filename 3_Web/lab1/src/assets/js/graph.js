@@ -15,8 +15,8 @@ const CONFIG = {
 function getStyleColor(variableName, fallback) {
   return (
     getComputedStyle(document.documentElement)
-    .getPropertyValue(variableName)
-    .trim() || fallback
+      .getPropertyValue(variableName)
+      .trim() || fallback
   );
 }
 
@@ -102,45 +102,45 @@ export function renderCanvas(rValue = null, points = []) {
     const halfRLabel = rValue ? rValue / 2 : "R/2";
 
     const marks = [{
-        dx: -CONFIG.scale,
-        dy: 0,
-        text: `-${rLabel}`
-      },
-      {
-        dx: -CONFIG.scale / 2,
-        dy: 0,
-        text: `-${halfRLabel}`
-      },
-      {
-        dx: CONFIG.scale / 2,
-        dy: 0,
-        text: `${halfRLabel}`
-      },
-      {
-        dx: CONFIG.scale,
-        dy: 0,
-        text: `${rLabel}`
-      },
-      {
-        dx: 0,
-        dy: -CONFIG.scale,
-        text: `${rLabel}`
-      },
-      {
-        dx: 0,
-        dy: -CONFIG.scale / 2,
-        text: `${halfRLabel}`
-      },
-      {
-        dx: 0,
-        dy: CONFIG.scale / 2,
-        text: `-${halfRLabel}`
-      },
-      {
-        dx: 0,
-        dy: CONFIG.scale,
-        text: `-${rLabel}`
-      },
+      dx: -CONFIG.scale,
+      dy: 0,
+      text: `-${rLabel}`
+    },
+    {
+      dx: -CONFIG.scale / 2,
+      dy: 0,
+      text: `-${halfRLabel}`
+    },
+    {
+      dx: CONFIG.scale / 2,
+      dy: 0,
+      text: `${halfRLabel}`
+    },
+    {
+      dx: CONFIG.scale,
+      dy: 0,
+      text: `${rLabel}`
+    },
+    {
+      dx: 0,
+      dy: -CONFIG.scale,
+      text: `${rLabel}`
+    },
+    {
+      dx: 0,
+      dy: -CONFIG.scale / 2,
+      text: `${halfRLabel}`
+    },
+    {
+      dx: 0,
+      dy: CONFIG.scale / 2,
+      text: `-${halfRLabel}`
+    },
+    {
+      dx: 0,
+      dy: CONFIG.scale,
+      text: `-${rLabel}`
+    },
     ];
 
     ctx.beginPath();

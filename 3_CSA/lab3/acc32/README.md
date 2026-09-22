@@ -7,4 +7,4 @@
 Решение:
 - [Код на ассемблере](power_many.s)
 - [Конфигурация](power_many.yaml)
-- [Отчёт](https://wrench.edu.swampbuds.me/report/eaf588ba-85fd-4eee-9bb0-c86e130cb81a)
+- [Отчёт](https://wrench-edge.edu.swampbuds.me/report/9ce329b8-b5c4-4109-89cd-40caf5513f03)

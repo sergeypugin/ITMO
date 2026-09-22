@@ -7,35 +7,30 @@ output_addr:     .word  0x84               ; Адрес начала выход�
 error_val:       .word  -1                 ; Некорректный ввод
 overflow_val:    .word  0xCCCCCCCC         ; Значение при переполнении
 
-const_0:         .word  0
 const_1:         .word  1
 const_4:         .word  4
 
 count:           .word  0                  ; Число пар (счётчик для вычислений)
 total_pairs:     .word  0                  ; Число пар (счётчик для вывода результата)
-words_to_read:   .word  0                  ; Чисел после count поступит (вычислится как count * 2, для чтения всех пар чисел)
+
+status:          .word  0                  ; 0 - успех, иначе - значение ошибки (error_val/overflow_val)
 
 base:            .word  0                  ; Текущее основание степени
 exp:             .word  0                  ; Текущий показатель степени
 res:             .word  0                  ; Промежуточный результат возведения в степень
 
     ; Указатели на буфер результатов
-buf_write_ptr:   .word  0xA00              ; Указатель на буфер входных данных (для записи)
-buf_read_ptr:    .word  0xA00              ; Указатель на буфер входных данных (для чтения)
-res_ptr:         .word  0x400              ; Указатель на буфер результатов (для записи)
-out_ptr:         .word  0x400              ; Указатель на буфер результатов (для чтения)
+res_ptr:         .word  0x0300             ; Указатель на буфер результатов (для записи)
+out_ptr:         .word  0x0300             ; Указатель на буфер результатов (для чтения)
 
     ; Из-за таких адресов у нас возникают лимиты
-    ; 1. Максимум 0x400 - 0x100 = 0x300 = 3 * 256 байт = 3 * 256 / 5 команды = 153,6 команды для программы
-    ; (но многие команды занимают не 5, а 1 байт, так что это оценка снизу).
-    ;
-    ; 2. Максимум 0xA00 - 0x400 = 0x600 = 6 * 256 байт = 6 * 256 / 4 слова = 384 слов для результатов
-    ; Откуда возникает логичное ограничение - максимум 384 пар входных данных, которые
-    ; будут располагаться в адресах 0xA00-0xFFFF (0x600 слов = 384 слова).
+    ; [0x0100; 0x02FF] - секция кода (0x200 = 2 * 256 байт = 2 * 256 / 5 = 102,4 команды для программы)
+    ; * но многие команды занимают не 5, а 1 байт, так что это оценка снизу
+    ; [0x0300; 0x0FFF] - буфер результатов (0xD00 = 13 * 256 байт = 13 * 256 / 4 = 832 пар можно обработать)
 
     .text
 
-    .org         0x0100                      ;  Важно не залезть на порты input_addr и output_addr
+    .org         0x0100                      ; Важно не залезть на порты input_addr и output_addr
 _start:
     ; Загружаем число пар из input_addr ~ 0x80
     ; Можно было бы написать и `load_addr 0x80`, но хардкод - это плохо
@@ -46,63 +41,28 @@ _start:
 
     ; Проверяем, что count <= 0 или нет
     load_addr    count
-    bltz         error                       ; если count < 0, то выводим ошибку
-    beqz         error                       ; если count == 0, то выводим ошибку
-
-    ; Вычисляем words_to_read = count * 2
-    load_addr    count
-    add          count
-    store_addr   words_to_read
-
-read_all_inputs:
-    ; Считываем слово из input_addr
-    load_addr    input_addr
-    load_acc
-    ; Увы, но тут аналога store_ind нет
-
-    ; Сохраняем в in_buf
-    store_ind    buf_write_ptr
-
-    ; buf_write_ptr += 4
-    load_addr    buf_write_ptr
-    add          const_4
-    store_addr   buf_write_ptr
-
-    ; words_to_read--
-    load_addr    words_to_read
-    sub          const_1
-    store_addr   words_to_read
-
-    ; Проверяем, все ли входные данные загружены
-    load_addr    words_to_read
-    beqz         pair_loop
-
-    jmp          read_all_inputs
+    bltz         count_error                 ; if count < 0: return -1
+    beqz         count_error                 ; if count == 0: return -1
 
 pair_loop:
     ; Загружаем base
-    load_addr    buf_read_ptr
+    load_addr    input_addr
     load_acc
     store_addr   base
 
-    ; buf_read_ptr += 4
-    load_addr    buf_read_ptr
-    add          const_4
-    store_addr   buf_read_ptr
-
     ; Загружаем exp
-    load_addr    buf_read_ptr
+    load_addr    input_addr
     load_acc
     store_addr   exp
 
-    ; buf_read_ptr += 4
-    load_addr    buf_read_ptr
-    add          const_4
-    store_addr   buf_read_ptr
+    ; if status != 0: skip
+    ; (просто считываем оставшиеся числа, чтобы опустошить входной порт 0x80)
+    load_addr    status
+    bnez         pair_next
 
     ; Проверяем, что exp < 0 или нет
     load_addr    exp
-    bltz         error                       ; отрицательная степень в нашей программе не рассматривается
+    bltz         exp_error                   ; отрицательная степень в нашей программе не рассматривается
 
     ; res = 1
     load_addr    const_1
@@ -117,7 +77,7 @@ exp_loop:
     clv                                      ; сбрасываем флаг переполнения
     load_addr    res
     mul          base                        ; acc = res * base
-    bvs          overflow                    ; если V = 1, то переходим к обработке ошибки
+    bvs          set_overflow_status         ; if V = 1: goto set_overflow_status
     store_addr   res                         ; res = acc
 
     ; exp--
@@ -135,19 +95,36 @@ exp_done:
     load_addr    res_ptr
     add          const_4
     store_addr   res_ptr
+    jmp          pair_next
 
-    ; Уменьшаем счётчик пар: count = count - 1
+count_error:
+    load_addr    error_val
+    store_addr   status
+    jmp          results
+
+exp_error:
+    load_addr    error_val
+    store_addr   status
+    jmp          pair_next
+
+set_overflow_status:
+    load_addr    overflow_val
+    store_addr   status
+    jmp          pair_next
+
+pair_next:
+    ; count -= 1
     load_addr    count
     sub          const_1
     store_addr   count
 
-    ; Если остались ещё пары (count > 0), переходим к следующей
+    ; if count > 0: goto pair_loop
     bgtz         pair_loop
 
-    ; Вывод в порт output_addr
 results:
-    load_addr    total_pairs
-    beqz         finish
+    ; if status != 0: goto error
+    load_addr    status
+    bnez         error
 
 results_loop:
     ; Загружаем результат для каждой пары из буфера: acc = mem[out_ptr]
@@ -172,18 +149,7 @@ finish:
     halt
 
 error:
-    ; Вывод значения -1 при некорректном вводе
-    load_addr    error_val
+    ; Вывод значения ошибки из переменной status
+    load_addr    status
     store_ind    output_addr
     halt
-
-overflow:
-    ; Вывод значения 0xCCCCCCCC при переполнении
-    load_addr    overflow_val
-    store_ind    output_addr
-    halt
-
-    .data
-
-    ; .org 0x400; Буфер для хранения результатов.
-    ; .org 0xA00; Буфер для хранения входных данных.

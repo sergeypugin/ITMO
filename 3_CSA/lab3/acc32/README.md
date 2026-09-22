@@ -1,8 +1,8 @@
 Вариант: `power_many`
 
 Условие:
-- [Ссылка на Wrench](https://github.com/ryukzak/wrench/blob/master/variants.md#power_many)
-- [Скачанное](power_many.py)
+- [docs/acc32](https://github.com/ryukzak/wrench/blob/master/docs/acc32.md)
+- [variants.md#power_many](https://github.com/ryukzak/wrench/blob/master/variants.md#power_many)
 
 Решение:
 - [Код на ассемблере](power_many.s)

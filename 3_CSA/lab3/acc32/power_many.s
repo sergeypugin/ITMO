@@ -40,7 +40,6 @@ _start:
     store_addr   total_pairs                 ; total_pairs <- acc
 
     ; Проверяем, что count <= 0 или нет
-    load_addr    count
     bltz         count_error                 ; if count < 0: return -1
     beqz         count_error                 ; if count == 0: return -1
 
@@ -100,7 +99,7 @@ exp_done:
 count_error:
     load_addr    error_val
     store_addr   status
-    jmp          results
+    jmp          pair_next
 
 exp_error:
     load_addr    error_val

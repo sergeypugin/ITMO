@@ -1,9 +1,5 @@
-import {
-  renderCanvas
-} from "./graph.js";
-import {
-  Storage
-} from "./storage.js";
+import { renderCanvas } from "./graph.js";
+import { Storage } from "./storage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("point-form");

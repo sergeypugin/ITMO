@@ -45,6 +45,4 @@ def power_many(*input_words: int) -> list[int]:
 assert power_many(2, 2, 10, 3, 5) == [1024, 243]
 assert power_many(3, 5, 0, 0, 5, 10, 2) == [1, 0, 100]
 assert power_many(1, 7, 1) == [7]
-
-if __name__ == "__main__":
-    print(power_many(2, 2, 10, 3, 5))
+assert power_many(3, 1, 0, 2, 3) == [-1]

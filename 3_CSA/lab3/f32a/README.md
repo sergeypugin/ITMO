@@ -1,8 +1,8 @@
 Вариант: `rotate_left`
 
 Условие:
-- [Ссылка на Wrench](https://github.com/ryukzak/wrench/blob/master/variants.md#rotate_left)
-- [Скачанное](rotate_left.py)
+- [Задание](https://github.com/ryukzak/wrench/blob/master/variants.md#rotate_left)
+- [docs/f32a](https://github.com/ryukzak/wrench/blob/master/docs/f32a.md)
 
 Решение:
 - [Код на ассемблере](rotate_left.s)

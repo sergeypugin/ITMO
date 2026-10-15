@@ -1,9 +1,5 @@
-import {
-  renderCanvas
-} from "./graph.js";
-import {
-  Storage
-} from "./storage.js";
+import { renderCanvas } from "./graph.js";
+import { Storage } from "./storage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("point-form");
@@ -56,6 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showError("Координата X должна быть числом.");
       return false;
     }
+
+    const parts = normalizedX.split(".");
+    if (parts[1] && parts[1].length > 15) {
+      showError("Слишком большая точность для координаты X: максимум 15 знаков после запятой / точки");
+      return false;
+    }
+
     if (numX <= -3 || numX >= 3) {
       showError("Координата X должна быть строго в интервале (-3 ... 3).");
       return false;

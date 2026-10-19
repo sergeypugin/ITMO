@@ -297,17 +297,16 @@ tbody tr:hover td {
   background-color: var(--accent);
 }
 
-/* Уведомления о результате: всегда сверху, чтобы не терялись в середине страницы. */
+/* Уведомления о результате: всегда сверху слева, чтобы не перекрывать карточку формы. */
 
 .toasts {
   position: fixed;
   top: 16px;
-  right: 16px;
-  bottom: auto;
+  left: 16px;
   z-index: 20;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 10px;
   width: min(320px, calc(100vw - 32px));
   pointer-events: none;
@@ -370,12 +369,70 @@ tbody tr:hover td {
   animation: toast-out 0.22s ease-in forwards;
 }
 
-
-@media (min-width: 900px) {
-  .toasts {
-    right: calc(var(--baymax-width) + 24px);
-  }
+/* Страница-переход на лабораторную: одна карточка по центру экрана. */
+.redirect-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
 }
+
+.redirect-page .card {
+  gap: 12px;
+  max-width: 560px;
+}
+
+.redirect-page p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.redirect-page a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Команда туннеля: выделяется одним кликом, рядом кнопка копирования. */
+.redirect-page .command {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.redirect-page .command code {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.redirect-page .copy-btn {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color 0.18s ease-in-out, background-color 0.18s ease-in-out;
+}
+
+.redirect-page .copy-btn:hover,
+.redirect-page .copy-btn.is-copied {
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+}
+
 
 @keyframes toast-in {
   from {
@@ -392,6 +449,6 @@ tbody tr:hover td {
 @keyframes toast-out {
   to {
     opacity: 0;
-    transform: translateX(16px) scale(0.97);
+    transform: translateX(-16px) scale(0.97);
   }
 }

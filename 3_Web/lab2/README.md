@@ -149,14 +149,19 @@ graph LR
 
    ```bash
    mkdir -p ~/httpd-root/mutex-dir   # только при первом запуске
-   nohup java -DFCGI_PORT=10715 -jar ~/httpd-root/fcgi-bin/lab2-server.jar \
+   nohup java -Xmx256m -DFCGI_PORT=10715 -jar ~/httpd-root/fcgi-bin/lab2-server.jar \
      > ~/httpd-root/fcgi.log 2>&1 &
+   sleep 2 && cat ~/httpd-root/fcgi.log   # ожидается "FastCGI стартует, порт 10715"
    sockstat -4l | grep 10715         # проверка, что порт слушается
    httpd -f ~/httpd-root/conf/httpd.conf -t
    httpd -f ~/httpd-root/conf/httpd.conf -k start
    ```
 
+   Флаг `-Xmx256m` обязателен: без него JVM на Helios пытается зарезервировать под кучу десятки гигабайт по объёму памяти хоста и падает с `Could not reserve enough space for ... object heap`, а в `fcgi.log` не появляется строка о старте
+
    Если `httpd: command not found`, используйте полный путь `/usr/local/sbin/httpd`
+
+   Предупреждения `Failed to enable the 'httpready' Accept Filter` при старте Apache безвредны, как и `(no pid file) not running` при попытке остановить ещё не запущенный сервер
 
 5. Откройте SSH-туннель на локальном компьютере:
    ```bash

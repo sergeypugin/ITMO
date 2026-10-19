@@ -24,6 +24,7 @@ deploy() {
     javac --release 17 -encoding UTF-8 -cp "$LIB" -d "$OUT/classes" "$SRC"/server/app/*.java
     (cd "$OUT/classes" && jar xf "$LIB" com)
     jar --create --file "$OUT/fcgi-bin/lab2-server.jar" --main-class app.Main -C "$OUT/classes" .
+    rm -rf "$OUT/classes"
 
     echo "Раскладка для Helios: src/build"
 }

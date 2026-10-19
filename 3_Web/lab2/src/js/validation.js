@@ -38,7 +38,10 @@ function checkNumber(raw, name, range) {
 }
 
 export function validateInput({ x, y, r }) {
-  const xValue = Number(normalizeNumber(x));
+  // Number("") даёт 0, поэтому пустой X нельзя пропускать через Number напрямую:
+  // иначе невыбранная радиокнопка превращается в координату 0.
+  const normalizedX = normalizeNumber(x);
+  const xValue = normalizedX === "" ? Number.NaN : Number(normalizedX);
   const checkedY = checkNumber(y, "Y", RANGES.y);
   const checkedR = checkNumber(r, "R", RANGES.r);
 

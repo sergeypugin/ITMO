@@ -6,11 +6,25 @@
  */
 
 /**
+ * Двойная точность IEEE-754 хранит около 15--16 значащих десятичных цифр,
+ * поэтому более длинная дробная часть после Number() уже искажена.
+ */
+export const MAX_PRECISION = 15;
+
+/**
  * Приводит значение из формы к каноническому виду: убирает пробелы
  * и заменяет десятичную запятую на точку.
  */
 export function normalizeNumber(raw) {
   return String(raw ?? "").trim().replace(",", ".");
+}
+
+/**
+ * Число знаков после десятичного разделителя в исходной записи.
+ */
+export function countDecimalPlaces(raw) {
+  const fraction = normalizeNumber(raw).split(".")[1];
+  return fraction ? fraction.length : 0;
 }
 
 /**
@@ -34,13 +48,13 @@ function rangeLabel(min, max) {
 }
 
 /**
- * Проверяет одно числовое значение: пустоту, формат и диапазон.
+ * Проверяет одно числовое значение: пустоту, формат, точность и диапазон.
  *
  * @param {string} raw значение из формы
- * @param {{name: string, min: number, max: number}} options
+ * @param {{name: string, min: number, max: number, maxPrecision?: number}} options
  * @returns {{valid: boolean, value: number, message: string}}
  */
-export function validateNumber(raw, { name, min, max }) {
+export function validateNumber(raw, { name, min, max, maxPrecision = MAX_PRECISION }) {
   const normalized = normalizeNumber(raw);
   const value = parseNumber(raw);
 
@@ -50,6 +64,14 @@ export function validateNumber(raw, { name, min, max }) {
 
   if (Number.isNaN(value)) {
     return { valid: false, value: Number.NaN, message: `Координата ${name} должна быть числом.` };
+  }
+
+  if (countDecimalPlaces(raw) > maxPrecision) {
+    return {
+      valid: false,
+      value,
+      message: `Слишком большая точность для координаты ${name}: максимум ${maxPrecision} знаков после запятой / точки.`,
+    };
   }
 
   if (value < min || value > max) {

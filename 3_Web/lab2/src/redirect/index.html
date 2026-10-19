@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лабораторная работа №2 | Веб-программирование</title>
+  <link rel="icon" href="../common/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../common/css/base.css">
+  <link rel="stylesheet" href="../common/css/components.css">
+  <script type="module" src="js/copy.js"></script>
+</head>
+
+<body class="redirect-page">
+  <main class="card">
+    <h2>Лабораторная работа №2</h2>
+    <p>Порты Helios закрыты снаружи, поэтому сама лабораторная открывается через SSH-туннель. Скопируйте команду и выполните её в терминале:</p>
+
+    <div class="command">
+      <code id="tunnel-command">ssh -p 2222 -L 10714:localhost:10714 s365809@helios.cs.ifmo.ru</code>
+      <button type="button" class="copy-btn" data-copy-target="tunnel-command">Скопировать</button>
+    </div>
+
+    <p>После ввода команды перейдите на <a href="http://localhost:10714/">localhost:10714</a></p>
+  </main>
+</body>
+
+</html>

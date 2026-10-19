@@ -1,0 +1,454 @@
+/* Общий слой: карточки, поля формы, кнопки, таблица и сообщения. */
+
+.card {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  width: 100%;
+  padding: 24px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Форма растягивается на всю карточку, чтобы кнопка держалась у нижнего края. */
+.card > form {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.card > h2,
+.results h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.card > h2::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+#graph {
+  flex: 0 0 auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  background-image: radial-gradient(circle at 50% 45%, var(--bg-card) 0%, var(--bg-soft) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.form-row {
+  margin-bottom: 18px;
+}
+
+.form-row > label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.form-row > input[type="text"],
+.form-row > select {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  color: inherit;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.18s ease-in-out, border-color 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
+}
+
+.form-row > input[type="text"]::placeholder {
+  color: var(--text-placeholder);
+}
+
+.form-row > input[type="text"]:hover,
+.form-row > select:hover {
+  border-color: var(--border-strong);
+}
+
+.form-row > input[type="text"]:focus,
+.form-row > select:focus {
+  outline: none;
+  background-color: var(--bg-card);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Ряд кнопок выбора из нескольких значений. */
+
+.buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.buttons-row > button,
+.y-btn {
+  flex: 1 0 28%;
+  padding: 10px 8px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text-muted);
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.18s ease-in-out, background-color 0.18s ease-in-out, border-color 0.18s ease-in-out;
+}
+
+.buttons-row > button:hover,
+.y-btn:hover {
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.buttons-row > button.active,
+.y-btn.active {
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.radio-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.radio-option {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.18s ease-in-out, background-color 0.18s ease-in-out, border-color 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
+}
+
+.radio-option:hover {
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.radio-option:has(input:checked) {
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 10px 18px -12px rgba(var(--accent-rgb), 0.9);
+}
+
+.radio-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.radio-option input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 14px 20px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--text-on-accent);
+  background-image: linear-gradient(180deg, var(--accent-light), var(--accent));
+  border: none;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-accent);
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 30px -16px rgba(var(--accent-rgb), 0.95);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  box-shadow: none;
+  cursor: progress;
+  transform: none;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+thead th {
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background-color: var(--bg-soft);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+thead th:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+thead th:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+tbody td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover td {
+  background-color: var(--bg-soft);
+}
+
+.hit-yes,
+.hit-no {
+  font-weight: 800;
+}
+
+.hit-yes {
+  color: var(--color-green);
+}
+
+.hit-no {
+  color: var(--color-red);
+}
+
+.hit-yes::before,
+.hit-no::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  vertical-align: 1px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+#clear-btn {
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color 0.18s ease-in-out, background-color 0.18s ease-in-out;
+}
+
+#clear-btn:hover {
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+}
+
+/* Уведомления о результате: всегда сверху слева, чтобы не перекрывать карточку формы. */
+
+.toasts {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: min(320px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 22px 40px -28px rgba(var(--shadow-rgb), 0.75);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: toast-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.toast-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toast-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: currentColor;
+}
+
+.toast-meta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.toast-hit {
+  color: var(--color-green);
+}
+
+.toast-miss,
+.toast-error {
+  color: var(--color-red);
+}
+
+.toast-out {
+  animation: toast-out 0.22s ease-in forwards;
+}
+
+/* Страница-переход на лабораторную: одна карточка по центру экрана. */
+.redirect-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.redirect-page .card {
+  gap: 12px;
+  max-width: 560px;
+}
+
+.redirect-page p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.redirect-page a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Команда туннеля: выделяется одним кликом, рядом кнопка копирования. */
+.redirect-page .command {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.redirect-page .command code {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.redirect-page .copy-btn {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color 0.18s ease-in-out, background-color 0.18s ease-in-out;
+}
+
+.redirect-page .copy-btn:hover,
+.redirect-page .copy-btn.is-copied {
+  color: var(--text-on-accent);
+  background-color: var(--accent);
+}
+
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(-16px) scale(0.97);
+  }
+}

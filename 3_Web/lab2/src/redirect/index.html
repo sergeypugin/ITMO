@@ -14,10 +14,11 @@
 <body class="redirect-page">
   <main class="card">
     <h2>Лабораторная работа №2</h2>
-    <p>Порты Helios закрыты снаружи, поэтому сама лабораторная открывается через SSH-туннель. Скопируйте команду и выполните её в терминале:</p>
+    <p>Это страница-переход к лабораторной работе №2 по веб-программированию. На Helios запускается личный экземпляр Apache httpd: он отдаёт статику, а Java FastCGI-сервер обрабатывает AJAX-запросы.</p>
+    <p>Порты Helios закрыты снаружи, поэтому лабораторная открывается через SSH-туннель. Скопируйте команду, замените <code>xxxxxx</code> на ваш ИСУ и выполните её в терминале:</p>
 
     <div class="command">
-      <code id="tunnel-command">ssh -p 2222 -L 10714:localhost:10714 s365809@helios.cs.ifmo.ru</code>
+      <code id="tunnel-command">ssh -p 2222 -L 10714:localhost:10714 sXXXXXX@helios.cs.ifmo.ru</code>
       <button type="button" class="copy-btn" data-copy-target="tunnel-command">Скопировать</button>
     </div>
 

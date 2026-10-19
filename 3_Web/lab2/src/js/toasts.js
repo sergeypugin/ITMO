@@ -2,11 +2,10 @@
  * Всплывающие уведомления о результате проверки и об ошибках.
  *
  * Новое уведомление встаёт сверху и сдвигает предыдущие вниз, а само исчезает
- * через несколько секунд, чтобы не копилось больше пары сообщений.
+ * через несколько секунд; одновременно показывается не больше пяти.
  */
 const LIFETIME_MS = 5000;
 const MAX_TOASTS = 5;
-const MAX_TOASTS_NARROW = 2;
 
 const formatter = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 });
 
@@ -51,22 +50,12 @@ function showToast(message) {
     return;
   }
 
-  // Повтор того же сообщения не должен плодить копии при частых кликах.
-  const newest = stack.firstElementChild;
-
-  if (newest?.dataset.signature === `${message.title}|${message.meta}`) {
-    return;
-  }
-
   const toast = buildToast(message);
-  toast.dataset.signature = `${message.title}|${message.meta}`;
+
   toast.addEventListener("click", () => dismiss(toast));
   stack.prepend(toast);
 
-  // На узких экранах уведомления закрывают контент, поэтому держим не больше двух.
-  const limit = window.matchMedia("(max-width: 1279px)").matches ? MAX_TOASTS_NARROW : MAX_TOASTS;
-
-  while (stack.children.length > limit) {
+  while (stack.children.length > MAX_TOASTS) {
     stack.lastElementChild.remove();
   }
 

@@ -46,6 +46,14 @@ public final class Main {
                 sendJson(405, "Method Not Allowed", errorBody("Поддерживается только метод GET."));
             } else {
                 Map<String, String> params = parseQuery(query);
+
+                // Отдельный параметр вместо проверки точки: иначе пустой запрос
+                // не отличить от запроса истории.
+                if (params.containsKey("history")) {
+                    sendJson(200, "OK", historyBody());
+                    return;
+                }
+
                 double x = number(params, "x", "X", -4, 4);
                 double y = number(params, "y", "Y", -3, 5);
                 double r = number(params, "r", "R", 2, 5);
@@ -81,8 +89,7 @@ public final class Main {
         return params;
     }
 
-    private static double number(Map<String, String> params, String key, String name,
-                                 double min, double max) {
+    private static double number(Map<String, String> params, String key, String name, double min, double max) {
         String raw = params.get(key);
         if (raw == null || raw.isBlank()) {
             throw new IllegalArgumentException("Параметр " + name + " обязателен.");
@@ -107,6 +114,17 @@ public final class Main {
     private static String successBody(Point point) {
         StringBuilder json = new StringBuilder("{\"status\":\"ok\",\"point\":");
         json.append(point.toJson()).append(",\"history\":[");
+        appendHistory(json);
+        return json.append("]}").toString();
+    }
+
+    private static String historyBody() {
+        StringBuilder json = new StringBuilder("{\"status\":\"ok\",\"history\":[");
+        appendHistory(json);
+        return json.append("]}").toString();
+    }
+
+    private static void appendHistory(StringBuilder json) {
         synchronized (HISTORY) {
             for (int i = 0; i < HISTORY.size(); i++) {
                 if (i > 0) {
@@ -115,7 +133,6 @@ public final class Main {
                 json.append(HISTORY.get(i).toJson());
             }
         }
-        return json.append("]}").toString();
     }
 
     private static String errorBody(String message) {

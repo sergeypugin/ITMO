@@ -1,4 +1,4 @@
-import { requestCheck } from "./api.js";
+import { requestCheck, requestHistory } from "./api.js";
 import { validateInput } from "./validation.js";
 import { renderCanvas } from "./graph.js";
 import { renderHistory } from "./results.js";
@@ -49,7 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   renderCanvas(history);
+  loadHistory();
 
   // Шрифт может загрузиться позже первого кадра: подписи осей перерисовываем.
   document.fonts?.ready.then(() => renderCanvas(history));
+
+  // Сервер держит историю в памяти, поэтому после перезагрузки страницы
+  // точки и таблица восстанавливаются из него, а не только после новой отправки.
+  async function loadHistory() {
+    try {
+      history = await requestHistory();
+      renderHistory(historyBody, history);
+      renderCanvas(history);
+    } catch (error) {
+      showRequestToast(error.message, error instanceof TypeError);
+    }
+  }
 });

@@ -1,0 +1,98 @@
+/* Общий слой: шапка, основная сетка и блок результатов. */
+
+#header {
+  max-width: 984px;
+  margin: 32px auto 0;
+  padding: 26px 28px 28px;
+  text-align: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  animation: rise 0.5s ease-out both;
+}
+
+/* Лицо Бэймакса: две точки и соединяющая их линия. */
+.baymax-face {
+  width: 76px;
+  height: 32px;
+  margin: 0 auto 14px;
+  background:
+    radial-gradient(circle at 18px 16px, var(--text-main) 6px, transparent 6.5px),
+    radial-gradient(circle at 58px 16px, var(--text-main) 6px, transparent 6.5px),
+    linear-gradient(var(--text-main), var(--text-main)) center / 46px 3px no-repeat;
+}
+
+#header > .author {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+#header .group,
+#header .var {
+  display: inline-flex;
+  align-items: center;
+  margin: 12px 4px 0;
+  padding: 5px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+}
+
+/* Как в первой лабораторной: два квадрата по центру, на узком экране друг под другом. */
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 984px;
+  margin: 24px auto 0;
+  animation: rise 0.5s 0.06s ease-out both;
+}
+
+.content > #graph,
+.content > .card {
+  flex: 0 1 var(--square);
+  width: 100%;
+  min-width: 0;
+  max-width: var(--square);
+  aspect-ratio: 1 / 1;
+}
+
+.results {
+  max-width: 984px;
+  margin: 24px auto 48px;
+  padding: 24px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow-x: auto;
+  animation: rise 0.5s 0.12s ease-out both;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1015px) {
+  #header,
+  .results {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .content {
+    padding: 0 16px;
+  }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Лабораторная работа №2 | Веб-программирование</title>
+  <meta name="theme-color" content="#f5eee8" />
+  <link rel="icon" href="common/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="common/assets/fonts/nunito-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="common/css/base.css" />
+  <link rel="stylesheet" href="common/css/layout.css" />
+  <link rel="stylesheet" href="common/css/components.css" />
+  <script type="module" src="js/main.js"></script>
+</head>
+
+<body>
+  <header id="header">
+    <div class="baymax-face" aria-hidden="true"></div>
+    <h1 class="author">Пугин Сергей Евгеньевич</h1>
+    <div class="group">Группа: P3219</div>
+    <div class="var">Вариант: 8679</div>
+  </header>
+
+  <main class="content">
+    <canvas id="graph" width="480" height="480" aria-label="График области попадания">
+      В вашем браузере Canvas не поддерживается
+    </canvas>
+
+    <section class="card points">
+      <h2>Параметры точки</h2>
+      <form id="point-form" novalidate>
+        <div class="form-row x">
+          <label>Координата X (-4 ... 4):</label>
+          <div class="radio-row">
+            <label class="radio-option"><input type="radio" name="x" value="-4" />-4</label>
+            <label class="radio-option"><input type="radio" name="x" value="-3" />-3</label>
+            <label class="radio-option"><input type="radio" name="x" value="-2" />-2</label>
+            <label class="radio-option"><input type="radio" name="x" value="-1" />-1</label>
+            <label class="radio-option"><input type="radio" name="x" value="0" />0</label>
+            <label class="radio-option"><input type="radio" name="x" value="1" />1</label>
+            <label class="radio-option"><input type="radio" name="x" value="2" />2</label>
+            <label class="radio-option"><input type="radio" name="x" value="3" />3</label>
+            <label class="radio-option"><input type="radio" name="x" value="4" />4</label>
+          </div>
+        </div>
+
+        <div class="form-row y">
+          <label for="y-val">Координата Y (-3 ... 5):</label>
+          <input type="text" id="y-val" name="y" placeholder="Введите число от -3 до 5" autocomplete="off" />
+        </div>
+
+        <div class="form-row r">
+          <label for="r-val">Радиус R (2 ... 5):</label>
+          <input type="text" id="r-val" name="r" placeholder="Введите число от 2 до 5" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="submit-btn">Проверить</button>
+      </form>
+    </section>
+  </main>
+
+  <section class="results">
+    <div class="toolbar">
+      <h2>Результаты проверок</h2>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>X</th>
+          <th>Y</th>
+          <th>R</th>
+          <th>Попадание</th>
+          <th>Время сервера</th>
+          <th>Время работы, мс</th>
+        </tr>
+      </thead>
+      <tbody id="history"></tbody>
+    </table>
+  </section>
+
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+</body>
+
+</html>

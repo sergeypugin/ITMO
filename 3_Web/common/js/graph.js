@@ -1,3 +1,15 @@
+/**
+ * Общая отрисовка графика области попадания.
+ *
+ * Оси, подписи и точки одинаковы для всех лаб; фигуру области рисует сама
+ * лаба через drawShape, потому что она зависит от варианта.
+ *
+ * Все точки проектируются на действующий радиус (point.x / radius * масштаб),
+ * поэтому при изменении радиуса их нужно перерисовать. Когда радиус
+ * неизвестен (NaN), подписи остаются символическими (-R, -R/2, R/2, R),
+ * а точки не рисуются -- нормировать их не на что.
+ */
+
 const CONFIG = {
   padding: 24, // Отступ осей от края холста
   arrowSize: 8, // Длина наконечника стрелки
@@ -11,6 +23,8 @@ const CONFIG = {
   pointLineWidth: 0.5,
   lastPointLineWidth: 1.5,
 };
+
+const numberFormatter = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 });
 
 let colorProbe = null;
 
@@ -32,45 +46,46 @@ function getStyleColor(variableName) {
 }
 
 /**
- * Рисует область варианта и точки истории.
+ * Рисует область варианта, оси и точки истории.
  *
- * Область задана относительно R, поэтому и точки нормируются на свой R:
- * точка на границе своей области всегда попадает на границу фигуры.
+ * @param {{
+ *   canvasId?: string,
+ *   scale?: number,
+ *   radius?: number,
+ *   points?: object[],
+ *   drawShape?: (ctx: CanvasRenderingContext2D, layout: {
+ *     centerX: number,
+ *     centerY: number,
+ *     scale: number,
+ *     getStyleColor: (variableName: string) => string,
+ *   }) => void,
+ * }} options
  */
-export function renderCanvas(points = []) {
-  const canvas = document.getElementById("graph");
+export function renderGraph({
+  canvasId = "graph",
+  scale = CONFIG.scale,
+  radius = Number.NaN,
+  points = [],
+  drawShape = () => {},
+}) {
+  const canvas = document.getElementById(canvasId);
+
+  if (!canvas) {
+    return;
+  }
+
   const ctx = canvas.getContext("2d");
   const WIDTH = canvas.width;
   const HEIGHT = canvas.height;
   const CENTER_X = WIDTH / 2;
   const CENTER_Y = HEIGHT / 2;
 
+  const hasR = Number.isFinite(radius);
+
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  drawShapes();
+  drawShape(ctx, { centerX: CENTER_X, centerY: CENTER_Y, scale, getStyleColor });
   drawAxes();
-  drawPoints(points);
-
-  function drawShapes() {
-    ctx.fillStyle = getStyleColor("--graph-figure");
-
-    // II четверть: четверть круга радиуса R
-    ctx.beginPath();
-    ctx.moveTo(CENTER_X, CENTER_Y);
-    ctx.arc(CENTER_X, CENTER_Y, CONFIG.scale, Math.PI, 1.5 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
-
-    // III четверть: квадрат со стороной R
-    ctx.fillRect(CENTER_X - CONFIG.scale, CENTER_Y, CONFIG.scale, CONFIG.scale);
-
-    // IV четверть: треугольник (0, 0), (R/2, 0), (0, -R)
-    ctx.beginPath();
-    ctx.moveTo(CENTER_X, CENTER_Y);
-    ctx.lineTo(CENTER_X + CONFIG.scale / 2, CENTER_Y);
-    ctx.lineTo(CENTER_X, CENTER_Y + CONFIG.scale);
-    ctx.closePath();
-    ctx.fill();
-  }
+  drawPoints();
 
   function drawAxes() {
     const axesColor = getStyleColor("--text-main");
@@ -100,36 +115,47 @@ export function renderCanvas(points = []) {
     ctx.fillText("y", CENTER_X + 12, CONFIG.padding / 2);
 
     const marks = [
-      { dx: -CONFIG.scale, dy: 0, text: "-R" },
-      { dx: -CONFIG.scale / 2, dy: 0, text: "-R/2" },
-      { dx: CONFIG.scale / 2, dy: 0, text: "R/2" },
-      { dx: CONFIG.scale, dy: 0, text: "R" },
-      { dx: 0, dy: -CONFIG.scale, text: "R" },
-      { dx: 0, dy: -CONFIG.scale / 2, text: "R/2" },
-      { dx: 0, dy: CONFIG.scale / 2, text: "-R/2" },
-      { dx: 0, dy: CONFIG.scale, text: "-R" },
+      { dx: -scale, dy: 0, factor: -1 },
+      { dx: -scale / 2, dy: 0, factor: -0.5 },
+      { dx: scale / 2, dy: 0, factor: 0.5 },
+      { dx: scale, dy: 0, factor: 1 },
+      { dx: 0, dy: -scale, factor: 1 },
+      { dx: 0, dy: -scale / 2, factor: 0.5 },
+      { dx: 0, dy: scale / 2, factor: -0.5 },
+      { dx: 0, dy: scale, factor: -1 },
     ];
 
     ctx.beginPath();
     marks.forEach((mark) => {
       const x = CENTER_X + mark.dx;
       const y = CENTER_Y + mark.dy;
+      const text = markLabel(mark.factor);
 
       if (mark.dy === 0) {
         ctx.moveTo(x, CENTER_Y - CONFIG.tickSize);
         ctx.lineTo(x, CENTER_Y + CONFIG.tickSize);
-        ctx.fillText(mark.text, x, CENTER_Y + CONFIG.labelOffset);
+        ctx.fillText(text, x, CENTER_Y + CONFIG.labelOffset);
       } else {
         ctx.moveTo(CENTER_X - CONFIG.tickSize, y);
         ctx.lineTo(CENTER_X + CONFIG.tickSize, y);
-        ctx.fillText(mark.text, CENTER_X - (CONFIG.labelOffset + 4), y);
+        ctx.fillText(text, CENTER_X - (CONFIG.labelOffset + 4), y);
       }
     });
     ctx.stroke();
   }
 
-  function drawPoints(points) {
-    if (!points || points.length === 0) {
+  function markLabel(factor) {
+    if (!hasR) {
+      if (factor === 1) return "R";
+      if (factor === 0.5) return "R/2";
+      if (factor === -1) return "-R";
+      return "-R/2";
+    }
+    return numberFormatter.format(radius * factor);
+  }
+
+  function drawPoints() {
+    if (points.length === 0 || !hasR) {
       return;
     }
 
@@ -138,8 +164,8 @@ export function renderCanvas(points = []) {
     const textColor = getStyleColor("--text-main");
 
     points.forEach((point, index) => {
-      const canvasX = CENTER_X + (point.x / point.r) * CONFIG.scale;
-      const canvasY = CENTER_Y - (point.y / point.r) * CONFIG.scale;
+      const canvasX = CENTER_X + (point.x / radius) * scale;
+      const canvasY = CENTER_Y - (point.y / radius) * scale;
       const isLast = index === points.length - 1;
 
       ctx.beginPath();

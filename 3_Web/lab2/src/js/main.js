@@ -27,10 +27,7 @@ const HISTORY_COLUMNS = [
   { key: "executionTimeMs", format: (ms) => ms.toFixed(3) },
 ];
 
-/**
- * Область варианта 8679: четверть круга во II четверти, квадрат в III
- * и треугольник в IV. Геометрия и CSS-переменные приходят из renderGraph.
- */
+// Область варианта 8679: четверть круга во II, квадрат в III, треугольник в IV.
 function drawShape(ctx, { centerX, centerY, scale, getStyleColor }) {
   ctx.fillStyle = getStyleColor("--graph-figure");
 
@@ -62,9 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let history = [];
 
-  // Действующий радиус: допустимое значение из формы (живое перепроецирование
-  // точек при изменении), иначе радиус последней точки истории, иначе
-  // символический R -- истории нет, на графике остаются подписи -R, R/2, R.
+  // Действующий радиус: допустимое значение из формы, иначе радиус
+  // последней точки истории, иначе символический R.
   function currentRadius() {
     const formR = parseNumber(rInput.value);
     if (Number.isFinite(formR) && formR >= RANGES.r.min && formR <= RANGES.r.max) {
@@ -123,8 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Шрифт может загрузиться позже первого кадра: подписи осей перерисовываем.
   document.fonts?.ready.then(draw);
 
-  // Сервер держит историю в памяти, поэтому после перезагрузки страницы
-  // точки и таблица восстанавливаются из него, а не только после новой отправки.
+  // Восстанавливаем историю с сервера при загрузке страницы.
   async function loadHistory() {
     try {
       history = await requestHistory();

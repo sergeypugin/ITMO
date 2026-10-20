@@ -1,9 +1,4 @@
-/**
- * Слой доступа к FastCGI-серверу.
- *
- * createApi принимает endpoint конкретной лабы, поэтому общий код не зависит
- * от имени jar-файла: достаточно передать /fcgi-bin/labN-server.jar.
- */
+// Слой доступа к FastCGI-серверу.
 export function createApi({ endpoint }) {
   const historyUrl = `${endpoint}?history`;
 
@@ -27,12 +22,7 @@ export function createApi({ endpoint }) {
     return payload;
   }
 
-  /**
-   * Отправляет GET-запрос на сервер и возвращает разобранный ответ.
-   *
-   * @param {{x: number, y: number, r: number}} point
-   * @returns {Promise<{status: string, point: object, history: object[]}>}
-   */
+  // Отправляет GET-запрос проверки точки на сервер.
   function requestCheck({ x, y, r }) {
     const params = new URLSearchParams({
       x: String(x),
@@ -43,11 +33,7 @@ export function createApi({ endpoint }) {
     return requestJson(`${endpoint}?${params.toString()}`);
   }
 
-  /**
-   * Запрашивает накопленную историю проверок.
-   *
-   * @returns {Promise<object[]>}
-   */
+  // Запрашивает накопленную историю проверок.
   async function requestHistory() {
     const payload = await requestJson(historyUrl);
     return payload.history ?? [];

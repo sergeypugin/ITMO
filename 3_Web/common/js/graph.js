@@ -1,15 +1,5 @@
-/**
- * Общая отрисовка графика области попадания.
- *
- * Оси, подписи и точки одинаковы для всех лаб; фигуру области рисует сама
- * лаба через drawShape, потому что она зависит от варианта.
- *
- * Все точки проектируются на действующий радиус (point.x / radius * масштаб),
- * поэтому при изменении радиуса их нужно перерисовать. Когда радиус
- * неизвестен (NaN), подписи остаются символическими (-R, -R/2, R/2, R),
- * а точки не рисуются -- нормировать их не на что.
- */
-
+// Отрисовка графика области: оси, подписи и точки общие,
+// а фигуру варианта рисует сама лаба через drawShape.
 const CONFIG = {
   padding: 24, // Отступ осей от края холста
   arrowSize: 8, // Длина наконечника стрелки
@@ -28,12 +18,8 @@ const numberFormatter = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 
 
 let colorProbe = null;
 
-/**
- * Значение CSS-переменной в виде, пригодном для canvas.
- *
- * getComputedStyle возвращает кастомное свойство как есть, вместе с вложенными
- * var(...), поэтому цвет разрешается через реальное свойство color.
- */
+// getComputedStyle возвращает custom property как есть (вместе с var(...)),
+// поэтому цвет разрешается через временный элемент и реальное свойство color.
 function getStyleColor(variableName) {
   if (!colorProbe) {
     colorProbe = document.createElement("span");
@@ -45,22 +31,7 @@ function getStyleColor(variableName) {
   return getComputedStyle(colorProbe).color;
 }
 
-/**
- * Рисует область варианта, оси и точки истории.
- *
- * @param {{
- *   canvasId?: string,
- *   scale?: number,
- *   radius?: number,
- *   points?: object[],
- *   drawShape?: (ctx: CanvasRenderingContext2D, layout: {
- *     centerX: number,
- *     centerY: number,
- *     scale: number,
- *     getStyleColor: (variableName: string) => string,
- *   }) => void,
- * }} options
- */
+// Рисует область варианта, оси и точки истории.
 export function renderGraph({
   canvasId = "graph",
   scale = CONFIG.scale,

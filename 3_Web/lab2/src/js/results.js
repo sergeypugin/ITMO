@@ -1,21 +1,10 @@
-/**
- * Отрисовка таблицы результатов.
- *
- * История приходит с сервера в хронологическом порядке, поэтому для показа
- * разворачиваем её: последняя проверка должна быть сверху.
- *
- * Набор колонок задаёт лаба: ключ в объекте точки, необязательный формат
- * (значение или DOM-узел) и необязательный CSS-класс ячейки.
- */
-
+// Отрисовка таблицы результатов. Последняя проверка отображается сверху.
 const dateTimeFormatter = new Intl.DateTimeFormat("ru-RU", {
   dateStyle: "medium",
   timeStyle: "medium",
 });
 
-/**
- * Время сервера в виде элемента <time> с машинночитаемым атрибутом.
- */
+// Время сервера в виде элемента <time> с атрибутом dateTime.
 export function formatServerTime(value) {
   const date = new Date(value);
   const time = document.createElement("time");
@@ -47,15 +36,7 @@ function buildCell(point, column) {
   return cell;
 }
 
-/**
- * @param {HTMLElement} tableBody
- * @param {object[]} history
- * @param {{columns: Array<{
- *   key: string,
- *   format?: ((value: any, point: object) => string | Node) | string,
- *   className?: ((value: any, point: object) => string) | string,
- * }>}} options
- */
+// Рендерит строки таблицы результатов по переданному списку колонок.
 export function renderHistory(tableBody, history, { columns }) {
   const rows = [...history].reverse().map((point) => {
     const row = document.createElement("tr");

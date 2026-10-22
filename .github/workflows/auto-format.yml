@@ -9,6 +9,9 @@ on:
 jobs:
   format:
     runs-on: ubuntu-latest
+    # Пуш от бота не должен запускать автоформат повторно. GITHUB_TOKEN-пуш
+    # новых workflow не создаёт, но условие защищает и от ручных перезапусков.
+    if: github.actor != 'github-actions[bot]'
     permissions:
       contents: write
     steps:
@@ -35,7 +38,8 @@ jobs:
       - name: Auto-commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "style: auto-format via `.editorconfig` [skip ci]"
-          # Используется [skip ci], чтобы предотвратить рекурсивный запуск
+          # [skip ci] не используем: он пропускает все workflow для этого пуша,
+          # а не только автоформат
+          commit_message: "style: auto-format via `.editorconfig`"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"

@@ -1,3 +1,12 @@
+# Для учёбы
 *.exe
-__pycache__/
 _ignore
+
+# Python: кэш
+__pycache__/
+
+# Java: скомпилированные классы
+*.class
+
+# Каталоги сборки
+build/

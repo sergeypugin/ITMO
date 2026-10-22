@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лабораторная работа №2 | Веб-программирование</title>
+  <link rel="icon" href="../common/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../common/css/base.css">
+  <link rel="stylesheet" href="../common/css/components.css">
+  <script type="module" src="js/copy.js"></script>
+</head>
+
+<body class="redirect-page">
+  <main class="card">
+    <h2>Лабораторная работа №2</h2>
+    <p>Это страница-переход к лабораторной работе №2 по веб-программированию. На Helios запускается личный экземпляр Apache httpd: он отдаёт статику, а Java FastCGI-сервер обрабатывает AJAX-запросы.</p>
+    <p>Порты Helios закрыты снаружи, поэтому лабораторная открывается через SSH-туннель. Скопируйте команду, замените <code>xxxxxx</code> на ваш ИСУ и выполните её в терминале:</p>
+
+    <div class="command">
+      <code id="tunnel-command">ssh -p 2222 -L 10714:localhost:10714 sXXXXXX@helios.cs.ifmo.ru</code>
+      <button type="button" class="copy-btn" data-copy-target="tunnel-command">Скопировать</button>
+    </div>
+
+    <p>Сайт <a href="http://localhost:10714/">localhost:10714</a> будет работать только пока открыт терминал, в котором вы ввели команду. Чтобы остановить туннель, закройте терминал или нажмите <code>Ctrl+C</code>.</p>
+  </main>
+</body>
+
+</html>

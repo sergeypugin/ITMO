@@ -88,7 +88,6 @@ body {
 body {
   min-height: 100vh;
   background-color: var(--bg-page);
-  /* Без текстуры: у фото Бэймакса тот же цвет фона, и его прямоугольник не виден. */
   background-image: radial-gradient(90% 55% at 18% 0%, rgba(var(--glow-rgb), 0.9), rgba(var(--glow-rgb), 0) 70%);
   color: var(--text-main);
   font-family: var(--font-body);

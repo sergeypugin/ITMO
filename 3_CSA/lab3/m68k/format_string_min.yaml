@@ -1,0 +1,16 @@
+limit: 1000
+memory_size: 4096
+
+memory_mapped_io:
+  0x80: ["Min 32-bit: %d\n-2147483648\n"]
+  0x84: []
+
+reports:
+  - name: "Test verification"
+    slice: last
+    view: |
+      symio[0x80]: {io:0x80:sym}
+      symio[0x84]: {io:0x84:sym}
+    assert: |
+      symio[0x80]: "" >>> ""
+      symio[0x84]: "" >>> "Min 32-bit: -2147483648"

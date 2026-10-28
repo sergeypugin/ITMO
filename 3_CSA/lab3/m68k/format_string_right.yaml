@@ -1,0 +1,16 @@
+limit: 1000
+memory_size: 4096
+
+memory_mapped_io:
+  0x80: ["%5d\n42\n"]
+  0x84: []
+
+reports:
+  - name: "Test verification"
+    slice: last
+    view: |
+      symio[0x80]: {io:0x80:sym}
+      symio[0x84]: {io:0x84:sym}
+    assert: |
+      symio[0x80]: "" >>> ""
+      symio[0x84]: "" >>> "   42"

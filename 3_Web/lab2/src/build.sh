@@ -19,8 +19,7 @@ build() {
     cp -r "$SRC/js" "$OUT/htdocs/js"
     cp "$SRC/httpd.conf" "$OUT/conf/"
 
-    # На Helios стоит JDK 17, локально может быть новее
-    javac --release 17 -encoding UTF-8 -cp "$LIB" -d "$OUT/classes" "$SRC"/server/app/*.java
+    javac --release 21 -encoding UTF-8 -cp "$LIB" -d "$OUT/classes" "$SRC"/server/app/*.java
     (cd "$OUT/classes" && jar xf "$LIB" com)
     jar --create --file "$OUT/fcgi-bin/lab2-server.jar" --main-class app.Main -C "$OUT/classes" .
     # classes -- промежуточный результат компиляции, в готовой раскладке ему не место

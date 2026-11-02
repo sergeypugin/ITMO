@@ -14,8 +14,3 @@ reports:
     assert: |
       symio[0x80]: "" >>> ""
       symio[0x84]: "" >>> "Num: 42"
-
-  - name: "Stack statistics"
-    slice: last
-    view: |
-      {isa-specific}

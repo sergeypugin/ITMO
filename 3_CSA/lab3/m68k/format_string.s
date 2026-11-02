@@ -36,7 +36,7 @@ _start:
     movea.l  (A0), A2
 
     movea.l  output_buffer_size, A0
-    move.l   (A0), D3                        ; D3 = output buffer size
+    move.l   (A0), D5                        ; D5 = output buffer size
 
     movea.l  format_buffer_size, A0
     move.l   (A0), D4                        ; D4 = format buffer size
@@ -68,7 +68,7 @@ scan_loop:
     cmp.b    0, D1
     beq      finish
 
-    cmp.l    D4, D0
+    cmp.l    D5, D0
     bge      buffer_error                    ; result buffer is full
 
     cmp.b    '%' , D1
@@ -288,7 +288,7 @@ print_spaces:
     cmp.l    0, D2
     ble      spaces_done
 space_print_loop:
-    cmp.l    D4, D0
+    cmp.l    D5, D0
     bge      error                           ; result buffer is full
     move.b   ' ' , (A3)+
     add.l    1, D0                           ; out_len++
@@ -304,7 +304,7 @@ print_buf_loop:
     move.b   (A4)+, D1
     cmp.b    0, D1
     beq      print_buf_done
-    cmp.l    D4, D0
+    cmp.l    D5, D0
     bge      error                           ; result buffer is full
     move.b   D1, (A3)+
     add.l    1, D0                           ; out_len++

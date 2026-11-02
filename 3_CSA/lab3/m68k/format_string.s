@@ -15,8 +15,10 @@ out_port:        .word  0x84
 err_code:        .word  -1
 buffer_err_code: .word  -2
 format_buffer_addr: .word  0x0700
+format_buffer_size: .word  32
 number_buffer_addr: .word  0x0721
 output_buffer_addr: .word  0x072D
+output_buffer_size: .word  1235
 stack_top_addr:  .word  0x0FFC
 
     .text
@@ -31,6 +33,12 @@ _start:
     movea.l  out_port, A0
     movea.l  (A0), A2
 
+    movea.l  output_buffer_size, A0
+    move.l   (A0), D3                        ; D3 = output buffer size
+
+    movea.l  format_buffer_size, A0
+    move.l   (A0), D4                        ; D4 = format buffer size
+
     movea.l  format_buffer_addr, A0
     movea.l  (A0), A0                        ; A0 = format buffer start
     movea.l  A0, A4                          ; A4 = format buffer write pointer
@@ -42,8 +50,8 @@ read_fmt_loop:
     cmp.b    10, D1                          ; '\n' ~ 10 в ASCII
     beq      read_fmt_done
 
-    cmp.l    32, D2
-    bge      error
+    cmp.l    D4, D2
+    bge      error                           ; format buffer is full
     move.b   D1, (A4)+                       ; format_buffer.append(cur_char)
     add.l    1, D2
     jmp      read_fmt_loop
@@ -58,7 +66,7 @@ scan_loop:
     cmp.b    0, D1
     beq      finish
 
-    cmp.l    1235, D0
+    cmp.l    D4, D0
     bge      buffer_error                    ; result buffer is full
 
     cmp.b    '%' , D1
@@ -191,25 +199,26 @@ error:
     movea.l  err_code, A0
     move.l   (A0), D1
     move.l   D1, (A2)
-    halt
+    jmp      end
 
 buffer_error:
     movea.l  buffer_err_code, A0
     move.l   (A0), D1
     move.l   D1, (A2)
-    halt
+    jmp      end
 
 finish:
     movea.l  output_buffer_addr, A3
     movea.l  (A3), A3                        ; a3 = output_buffer_start
     move.l   D0, D2                          ; counter = out_len
-    beq      flush_done
+    beq      end
 flush_loop:
     move.b   (A3)+, D1
     move.b   D1, (A2)                        ; output char
     sub.l    1, D2                           ; counter--
     bne      flush_loop
-flush_done:
+
+end:
     halt
 
 
@@ -277,7 +286,7 @@ print_spaces:
     cmp.l    0, D2
     ble      spaces_done
 space_print_loop:
-    cmp.l    1235, D0
+    cmp.l    D4, D0
     bge      error                           ; result buffer is full
     move.b   ' ' , (A3)+
     add.l    1, D0                           ; out_len++
@@ -293,7 +302,7 @@ print_buf_loop:
     move.b   (A4)+, D1
     cmp.b    0, D1
     beq      print_buf_done
-    cmp.l    1235, D0
+    cmp.l    D4, D0
     bge      error                           ; result buffer is full
     move.b   D1, (A3)+
     add.l    1, D0                           ; out_len++

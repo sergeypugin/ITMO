@@ -29,6 +29,14 @@
 > ```
 > Могу также порекомендовать свою архитектуру файлов и [settings.json](lab3/.zed/settings.json) + [tasks.json](lab3/.zed/tasks.json), чтобы запускать в Zed сразу таску, подходящую для любых архитектур, а не постоянно возиться с флагами ***wrench***
 
+> [!note]
+> В ***wrench*** точка входа задаётся **только** меткой `_start`. Если её нет, транслятор завершится ошибкой `_start label should be defined.`
+>
+> Проверка находится в [Wrench.hs](https://github.com/ryukzak/wrench/blob/master/src/wrench/Wrench/Wrench.hs#L232):
+> ```haskell
+> pc <- maybeToRight "_start label should be defined." (labels !? "_start")
+> ```
+
 > [!warning]
 > При локальном тестировании обратите внимание: для всех отчётов установлены одни и те же лимиты на число команд и объём памяти -- 2000 команд и 1 Кб. Так что пишите в `*.yaml` всегда `limit: 2000` и затем `memory_size: 0x1000` либо меньшие значения в формате dec или hex.
 

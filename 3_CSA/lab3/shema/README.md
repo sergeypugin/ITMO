@@ -20,3 +20,31 @@
 
 > [!tip]
 > О том, как реализовать кэш (не только в m68k, архитектура может быть любой), было написано [на Хабре](https://habr.com/ru/articles/179647)
+
+### Перевод в бинарник
+
+Увы, но почему-то экспорт в SVG от draw.io работает ооочень плохо, так что пришлось экспортировать в PNG. Использовал следующие команды (предварительно надо сделать `cd 3_CSA/lab3/shema`):
+
+#### Bash
+
+Тёмная тема:
+```bash
+& "/c/Program Files/draw.io/draw.io.exe" --export --format png --theme dark --scale 3 --border 20 --output m68k-neumann-cache-dark.png m68k-neumann-cache.drawio
+```
+
+Светлая тема:
+```bash
+"/c/Program Files/draw.io/draw.io.exe" --export --format png --theme light --scale 3 --border 20 --output m68k-neumann-cache-light.png m68k-neumann-cache.drawio
+```
+
+### PowerShell
+
+Тёмная тема:
+```bash
+& "C:\Program Files\draw.io\draw.io.exe" --export --format png --theme dark --scale 3 --border 20 --output m68k-neumann-cache-dark.png m68k-neumann-cache.drawio
+```
+
+Светлая тема:
+```bash
+& "C:\Program Files\draw.io\draw.io.exe" --export --format png --theme light --scale 3 --border 20 --output m68k-neumann-cache-light.png m68k-neumann-cache.drawio
+```

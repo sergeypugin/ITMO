@@ -1,7 +1,6 @@
 # m68k-neumann-cache
 
-> [code](m68k-neumann-cache.drawio) | [dark png](m68k-neumann-cache-dark.png)
-> ![m68k-neumann-cache](m68k-neumann-cache-dark.png)
+> [code](m68k-neumann-cache.drawio) | [dark png](m68k-neumann-cache-dark.png) | [light png](m68k-neumann-cache-light.png)
 
 > [!note]
 > Поскольку адрес -- 32-битный, то адресное пространство может быть увеличено вплоть до 4 ГБ

@@ -1,16 +1,13 @@
     .data
     ; [0x0000; 0x00FF] -- порты, коды ошибок и адреса буферов/стека (32 байта)
-    ; [0x0100; 0x06FF] -- программа
+    ; [0x0088; 0x06FF] -- программа
     ; Максимальная по размеру команда - 'move.l 0x12345678 4(A0)', весит 8 байт
     ; Точные правила по байтам находятся в wrench/src/wrench/Wrench/Isa/M68k.hs
     ; https://github.com/ryukzak/wrench/blob/master/src/wrench/Wrench/Isa/M68k.hs
-    ; 0x600 = 1536 байт -> 1536/8 команд -> 192 команды в худшем случае
     ; [0x0700; 0x0720] -- буфер формата (33 байта: до 32 символов + `\0`)
     ; [0x0721; 0x072C] -- буфер числа (12 байт: до 10 символов int32 + '-' + `\0`)
     ; [0x072D; 0x0BFF] -- буфер результата (0x4D3 = 1235 байт)
     ; [0x0C00; 0x0FFB] -- стек (0x3FC = 1020 байт)
-
-.org             0x0
 
 in_port:         .word  0x80
 out_port:        .word  0x84
@@ -22,10 +19,11 @@ number_buffer_addr: .word  0x0721
 output_buffer_addr: .word  0x072D
 output_buffer_size: .word  1235
 stack_top_addr:  .word  0x0FFC
+min_int_value:   .word  -2147483648
 min_int_string:  .byte  '-' , '2' , '1' , '4' , '7' , '4' , '8' , '3' , '6' , '4' , '8' , 0
 
     .text
-    .org     0x100
+    .org     0x88
 
 _start:
     movea.l  stack_top_addr, A0
@@ -231,7 +229,9 @@ int_to_str:
     clr.l    D1                              ; num_len = 0
 
     ; abs(-2147483648) is not representable as a signed 32-bit value
-    cmp.l    -2147483648, D0
+    movea.l  min_int_value, A5
+    move.l   (A5), D2
+    cmp.l    D2, D0
     beq      write_min_int
 
     clr.l    D3                              ; is_negative = 0

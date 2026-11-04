@@ -7,4 +7,4 @@
 Решение:
 - [Код на ассемблере](format_string.s)
 - [Конфигурация](format_string.yaml)
-- [Отчёт](https://wrench-edge.edu.swampbuds.me/report/f9a3dec5-0d73-43e8-9ff7-5aac6f037b72)
+- [Отчёт](https://wrench-edge.edu.swampbuds.me/report/ce283526-4193-4cfa-8cfa-d72ae2d4a066)

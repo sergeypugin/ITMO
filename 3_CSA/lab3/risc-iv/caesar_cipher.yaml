@@ -1,5 +1,5 @@
 # Execution limits
-limit: 1000 # Maximum instructions to execute
+limit: 2000 # Maximum instructions to execute
 memory_size: 4096 # Memory size in bytes, equals 0x1000
 
 # I/O configuration

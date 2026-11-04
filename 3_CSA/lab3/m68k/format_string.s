@@ -22,6 +22,7 @@ number_buffer_addr: .word  0x0721
 output_buffer_addr: .word  0x072D
 output_buffer_size: .word  1235
 stack_top_addr:  .word  0x0FFC
+min_int_string:  .byte  '-' , '2' , '1' , '4' , '7' , '4' , '8' , '3' , '6' , '4' , '8' , 0
 
     .text
     .org     0x100
@@ -269,19 +270,16 @@ copy_digit_loop:
     rts
 
 write_min_int:
-    move.b   '-' , (A4)+
-    move.b   '2' , (A4)+
-    move.b   '1' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '7' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '8' , (A4)+
-    move.b   '3' , (A4)+
-    move.b   '6' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '8' , (A4)+
+    movea.l  min_int_string, A5              ; A5 = min_int_string
+write_min_int_loop:
+    move.b   (A5)+, D2
+    cmp.b    0, D2
+    beq      write_min_int_done
+    move.b   D2, (A4)+
+    add.l    1, D1                           ; num_len++
+    jmp      write_min_int_loop
+write_min_int_done:
     clr.b    (A4)
-    move.l   11, D1                          ; length of -2147483648
     rts
 
 print_spaces:

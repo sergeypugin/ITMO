@@ -9,7 +9,7 @@
   - [acc32](lab3/acc32/README.md)
   - [f32a](lab3/f32a/README.md)
   - [risc-iv](lab3/risc-iv/README.md)
-- На версии `0.0.6.1 (06ffe0c)`:
+- На версии `0.0.6.3-EDGE (d94975b)`:
   - [m68k](lab3/m68k/README.md)
 
 > [!note]

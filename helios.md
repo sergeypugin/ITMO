@@ -111,7 +111,7 @@ Host helios
     ServerAliveInterval 60
 ```
 
-Теперь вместо `ssh -p 2222 s365809@helios.cs.ifmo.ru` достаточно `ssh helios`, а туннель поднимается через `ssh -L 10714:localhost:10714 helios`
+Теперь вместо `ssh -p 2222 s365809@helios.cs.ifmo.ru` достаточно `ssh helios`, а туннель ЛР2 поднимается через `ssh -L 24014:localhost:24014 helios`
 
 ## Если пароль всё равно спрашивают
 

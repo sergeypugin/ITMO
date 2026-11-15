@@ -5,7 +5,7 @@
 В этой лабораторной веб-сервер делится на две части: Apache httpd обслуживает статические файлы, а сервер Java FastCGI обрабатывает запросы проверки точек и историю.
 
 > [!note]
-> В методических материалах по умолчанию упоминаются порты 24000 и 24001. Так как они часто заняты другими студентами, используются свободные порты: 10714 (HTTP для Apache) и 10715 (TCP для Java FastCGI).
+> На Helios политика mac_portacl запрещает обычным пользователям занимать порты ниже 16384, поэтому используются свободные порты из разрешённого диапазона: 24014 (HTTP для Apache) и 24015 (TCP для Java FastCGI).
 
 > [!important]
 > В командах указан логин `s365809` (ИСУ 365809). При использовании другим студентом замените его на свой в командах и в файле `src/httpd.conf`. В коде страницы-перехода в `src/redirect/index.html` используется плейсхолдер `sXXXXXX`, его в исходниках менять не требуется.
@@ -14,9 +14,9 @@
 
 ```mermaid
 graph TD
-    Client[Браузер пользователя] -->|SSH-туннель: localhost:10714| WebServer[Apache httpd :10714]
+    Client[Браузер пользователя] -->|SSH-туннель: localhost:24014| WebServer[Apache httpd :24014]
     WebServer -->|Статика HTML / CSS / JS| StaticFiles[htdocs]
-    WebServer -->|FastCGI / TCP| Backend[Java FastCGI :10715]
+    WebServer -->|FastCGI / TCP| Backend[Java FastCGI :24015]
 ```
 
 ## Структура каталогов на сервере Helios
@@ -32,6 +32,7 @@ graph TD
 │       │   ├── css/
 │       │   └── js/
 │       │       ├── graph.js
+│       │       ├── toasts.js
 │       │       └── validate.js
 │       ├── lab1/
 │       └── lab2/                         # Страница-переход
@@ -47,8 +48,7 @@ graph TD
     │   ├── js/
     │   │   ├── api.js
     │   │   ├── main.js
-    │   │   ├── results.js
-    │   │   └── toasts.js
+    │   ├── results.js
     │   └── common -> ~/public_html/web/common/
     ├── fcgi-bin/
     │   └── lab2-server.jar               # Исполняемый jar FastCGI-сервера
@@ -174,7 +174,7 @@ ssh -p 2222 s365809@helios.cs.ifmo.ru
 
 2. Запустите Java FastCGI-сервер:
    ```bash
-   nohup java -Xmx256m -DFCGI_PORT=10715 -jar ~/httpd-root/fcgi-bin/lab2-server.jar \
+   nohup java -Xmx256m -DFCGI_PORT=24015 -jar ~/httpd-root/fcgi-bin/lab2-server.jar \
      > ~/httpd-root/fcgi.log 2>&1 &
    ```
 
@@ -183,10 +183,10 @@ ssh -p 2222 s365809@helios.cs.ifmo.ru
 3. Убедитесь, что процесс слушает порт:
    ```bash
    sleep 2 && cat ~/httpd-root/fcgi.log
-   sockstat -4l | grep 10715
+   sockstat -4l | grep 24015
    ```
 
-   В выводе лога должна появиться строка `FastCGI стартует, порт 10715`.
+   В выводе лога должна появиться строка `FastCGI стартует, порт 24015`.
 
 4. Проверьте конфигурацию и запустите Apache:
    ```bash
@@ -200,15 +200,15 @@ ssh -p 2222 s365809@helios.cs.ifmo.ru
 
 1. На локальном компьютере откройте SSH-туннель:
    ```bash
-   ssh -p 2222 -L 10714:localhost:10714 s365809@helios.cs.ifmo.ru
+   ssh -p 2222 -L 24014:localhost:24014 s365809@helios.cs.ifmo.ru
    ```
 
-2. Откройте в браузере страницу приложения: http://localhost:10714/
+2. Откройте в браузере страницу приложения: http://localhost:24014/
 
 3. Проверьте контрольные сценарии:
    - отображение страницы: интерфейс загружается со стилями, шрифтами и графиком
    - отправка формы: клик по кнопке «Проверить» добавляет точку на график и строку в таблицу
    - клик по графику: клик мышью по холсту определяет координаты, отправляет запрос и отрисовывает точку
    - проверка API через браузер или curl:
-     - прямой запрос точки: `http://localhost:10714/fcgi-bin/lab2-server.jar?x=-2&y=2&r=5`
-     - запрос накопленной истории: `http://localhost:10714/fcgi-bin/lab2-server.jar?history`
+     - прямой запрос точки: `http://localhost:24014/fcgi-bin/lab2-server.jar?x=-2&y=2&r=5`
+     - запрос накопленной истории: `http://localhost:24014/fcgi-bin/lab2-server.jar?history`

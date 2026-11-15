@@ -1,7 +1,7 @@
 import { createApi } from "./api.js";
 import { renderGraph } from "/common/js/graph.js";
 import { formatServerTime, renderHistory } from "./results.js";
-import { showResultToast, showRequestToast, showValidationToast } from "./toasts.js";
+import { showResultToast, showRequestToast, showValidationToast } from "/common/js/toasts.js";
 import { parseNumber, validateNumber } from "/common/js/validate.js";
 
 const RANGES = {

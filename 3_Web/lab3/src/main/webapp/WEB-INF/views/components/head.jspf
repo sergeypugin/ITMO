@@ -1,0 +1,13 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <fmt:setLocale value="ru_RU" />
+  <title><c:out value="${pageTitle}" /></title>
+  <link rel="icon" href="${pageContext.request.contextPath}/common/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="${pageContext.request.contextPath}/common/assets/fonts/nunito-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="${pageContext.request.contextPath}/common/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/base.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/layout.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/components.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/lab3.css">
+</head>

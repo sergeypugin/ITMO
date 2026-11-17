@@ -1,0 +1,10 @@
+<c:forEach var="item" items="${resultsBean.results}">
+  <tr data-x="${item.x}" data-y="${item.y}" data-r="${item.r}" data-hit="${item.hit}" data-ts="${item.checkedAt.time}">
+    <td><fmt:formatNumber value="${item.x}" maxFractionDigits="5" /></td>
+    <td><fmt:formatNumber value="${item.y}" maxFractionDigits="5" /></td>
+    <td><fmt:formatNumber value="${item.r}" maxFractionDigits="0" /></td>
+    <td class="${item.hit ? 'hit-yes' : 'hit-no'}"><c:out value="${item.hit ? 'Да' : 'Нет'}" /></td>
+    <td class="time-cell"></td>
+    <td><fmt:formatNumber value="${item.executionTimeMs}" minFractionDigits="3" maxFractionDigits="3" /></td>
+  </tr>
+</c:forEach>

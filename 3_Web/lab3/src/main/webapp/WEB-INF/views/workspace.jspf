@@ -1,0 +1,51 @@
+<main class="content">
+  <canvas id="graph" width="480" height="480" role="img" aria-label="График области попадания">
+    В вашем браузере Canvas не поддерживается
+  </canvas>
+
+  <section class="card points">
+    <h2>Параметры точки</h2>
+    <form id="point-form" action="${pageContext.request.contextPath}/controller" method="post" novalidate>
+      <input type="hidden" name="x" id="selected-x" value="">
+      <input type="hidden" name="r" id="selected-r" value="">
+
+      <div class="form-row">
+        <span class="field-label">Координата X:</span>
+        <div class="buttons-row" id="x-choices" role="group" aria-label="Координата X">
+        </div>
+      </div>
+
+      <div class="form-row y">
+        <label for="y-val">Координата Y (-3 ... 5):</label>
+        <input type="text" id="y-val" name="y" inputmode="decimal" placeholder="Введите число от -3 до 5" autocomplete="off">
+      </div>
+
+      <div class="form-row">
+        <span class="field-label">Радиус R:</span>
+        <div class="buttons-row" id="r-choices" role="group" aria-label="Радиус R">
+          <button type="button" data-value="1" aria-pressed="false">1</button>
+          <button type="button" data-value="2" aria-pressed="false">2</button>
+          <button type="button" data-value="3" aria-pressed="false">3</button>
+          <button type="button" data-value="4" aria-pressed="false">4</button>
+          <button type="button" data-value="5" aria-pressed="false">5</button>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Проверить</button>
+    </form>
+  </section>
+</main>
+
+<section class="results">
+  <div class="toolbar">
+    <h2>Результаты проверок</h2>
+  </div>
+  <table>
+    <thead>
+      <tr><th>X</th><th>Y</th><th>R</th><th>Попадание</th><th>Время проверки</th><th>Время работы, мс</th></tr>
+    </thead>
+    <tbody id="history-body">
+      <%@ include file="components/history-rows.jspf" %>
+    </tbody>
+  </table>
+</section>

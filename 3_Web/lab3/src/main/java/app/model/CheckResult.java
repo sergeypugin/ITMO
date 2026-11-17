@@ -11,6 +11,10 @@ public final class CheckResult implements Serializable {
     private final Date checkedAt;
     private final double executionTimeMs;
 
+    public CheckResult() {
+        this(new Point(0, 0, 0), false, new Date(), 0);
+    }
+
     public CheckResult(Point point, boolean hit, Date checkedAt, double executionTimeMs) {
         this.point = point;
         this.hit = hit;

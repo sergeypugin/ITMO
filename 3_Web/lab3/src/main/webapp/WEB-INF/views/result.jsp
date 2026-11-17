@@ -3,6 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<jsp:useBean id="resultsBean" class="app.model.ResultsBean" scope="session" />
+<jsp:useBean id="checkResult" class="app.model.CheckResult" scope="request" />
 <c:set var="pageTitle" value="Результат проверки | Лабораторная работа №3" />
 <%@ include file="components/head.jspf" %>
 <body>

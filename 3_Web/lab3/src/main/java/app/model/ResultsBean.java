@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 public final class ResultsBean implements Serializable {
+    public static final String SESSION_ATTRIBUTE = "resultsBean";
+
     private static final long serialVersionUID = 1L;
     private static final int MAX_RESULTS = 500;
 

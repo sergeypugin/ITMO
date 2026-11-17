@@ -5,6 +5,10 @@
          version="6.1">
   <display-name>Web Programming Lab 3</display-name>
 
+  <listener>
+    <listener-class>app.SessionBootstrap</listener-class>
+  </listener>
+
   <servlet>
     <servlet-name>ControllerServlet</servlet-name>
     <servlet-class>app.ControllerServlet</servlet-class>

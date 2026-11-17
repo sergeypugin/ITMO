@@ -13,13 +13,12 @@ import java.io.IOException;
 import java.util.Date;
 
 public final class AreaCheckServlet extends HttpServlet {
-    private static final String RESULTS_ATTRIBUTE = "resultsBean";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long startedAt = System.nanoTime();
-        ResultsBean results = (ResultsBean) request.getAttribute(RESULTS_ATTRIBUTE);
+        ResultsBean results = (ResultsBean) request.getSession().getAttribute(ResultsBean.SESSION_ATTRIBUTE);
         try {
             Point point = parsePoint(request);
             boolean hit = AreaChecker.contains(point);

@@ -1,17 +1,13 @@
 package app;
 
-import app.model.ResultsBean;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 public final class ControllerServlet extends HttpServlet {
-    private static final String RESULTS_ATTRIBUTE = "resultsBean";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,15 +42,6 @@ public final class ControllerServlet extends HttpServlet {
 
     private void prepareRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        HttpSession session = request.getSession();
-        synchronized (session) {
-            ResultsBean results = (ResultsBean) session.getAttribute(RESULTS_ATTRIBUTE);
-            if (results == null) {
-                results = new ResultsBean();
-                session.setAttribute(RESULTS_ATTRIBUTE, results);
-            }
-            request.setAttribute(RESULTS_ATTRIBUTE, results);
-        }
     }
 
     private void showForm(HttpServletRequest request, HttpServletResponse response)

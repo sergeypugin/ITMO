@@ -1,26 +1,29 @@
     .data
     ; [0x0000; 0x00FF] -- порты, коды ошибок и адреса буферов/стека (32 байта)
-    ; [0x0100; 0x06FF] -- программа
+    ; [0x0088; 0x06FF] -- программа
     ; Максимальная по размеру команда - 'move.l 0x12345678 4(A0)', весит 8 байт
-    ; 0x600 = 1536 байт -> 1536/8 команд -> 192 команды в худшем случае
+    ; Точные правила по байтам находятся в wrench/src/wrench/Wrench/Isa/M68k.hs
+    ; https://github.com/ryukzak/wrench/blob/master/src/wrench/Wrench/Isa/M68k.hs
     ; [0x0700; 0x0720] -- буфер формата (33 байта: до 32 символов + `\0`)
     ; [0x0721; 0x072C] -- буфер числа (12 байт: до 10 символов int32 + '-' + `\0`)
     ; [0x072D; 0x0BFF] -- буфер результата (0x4D3 = 1235 байт)
     ; [0x0C00; 0x0FFB] -- стек (0x3FC = 1020 байт)
-
-.org             0x0
 
 in_port:         .word  0x80
 out_port:        .word  0x84
 err_code:        .word  -1
 buffer_err_code: .word  -2
 format_buffer_addr: .word  0x0700
+format_buffer_size: .word  32
 number_buffer_addr: .word  0x0721
 output_buffer_addr: .word  0x072D
+output_buffer_size: .word  1235
 stack_top_addr:  .word  0x0FFC
+min_int_value:   .word  -2147483648
+min_int_string:  .byte  '-' , '2' , '1' , '4' , '7' , '4' , '8' , '3' , '6' , '4' , '8' , 0
 
     .text
-    .org     0x100
+    .org     0x88
 
 _start:
     movea.l  stack_top_addr, A0
@@ -30,6 +33,12 @@ _start:
     movea.l  (A0), A1
     movea.l  out_port, A0
     movea.l  (A0), A2
+
+    movea.l  output_buffer_size, A0
+    move.l   (A0), D5                        ; D5 = output buffer size
+
+    movea.l  format_buffer_size, A0
+    move.l   (A0), D4                        ; D4 = format buffer size
 
     movea.l  format_buffer_addr, A0
     movea.l  (A0), A0                        ; A0 = format buffer start
@@ -42,8 +51,8 @@ read_fmt_loop:
     cmp.b    10, D1                          ; '\n' ~ 10 в ASCII
     beq      read_fmt_done
 
-    cmp.l    32, D2
-    bge      error
+    cmp.l    D4, D2
+    bge      error                           ; format buffer is full
     move.b   D1, (A4)+                       ; format_buffer.append(cur_char)
     add.l    1, D2
     jmp      read_fmt_loop
@@ -58,7 +67,7 @@ scan_loop:
     cmp.b    0, D1
     beq      finish
 
-    cmp.l    1235, D0
+    cmp.l    D5, D0
     bge      buffer_error                    ; result buffer is full
 
     cmp.b    '%' , D1
@@ -191,25 +200,26 @@ error:
     movea.l  err_code, A0
     move.l   (A0), D1
     move.l   D1, (A2)
-    halt
+    jmp      end
 
 buffer_error:
     movea.l  buffer_err_code, A0
     move.l   (A0), D1
     move.l   D1, (A2)
-    halt
+    jmp      end
 
 finish:
     movea.l  output_buffer_addr, A3
     movea.l  (A3), A3                        ; a3 = output_buffer_start
     move.l   D0, D2                          ; counter = out_len
-    beq      flush_done
+    beq      end
 flush_loop:
     move.b   (A3)+, D1
     move.b   D1, (A2)                        ; output char
     sub.l    1, D2                           ; counter--
     bne      flush_loop
-flush_done:
+
+end:
     halt
 
 
@@ -219,7 +229,9 @@ int_to_str:
     clr.l    D1                              ; num_len = 0
 
     ; abs(-2147483648) is not representable as a signed 32-bit value
-    cmp.l    -2147483648, D0
+    movea.l  min_int_value, A5
+    move.l   (A5), D2
+    cmp.l    D2, D0
     beq      write_min_int
 
     clr.l    D3                              ; is_negative = 0
@@ -258,26 +270,23 @@ copy_digit_loop:
     rts
 
 write_min_int:
-    move.b   '-' , (A4)+
-    move.b   '2' , (A4)+
-    move.b   '1' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '7' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '8' , (A4)+
-    move.b   '3' , (A4)+
-    move.b   '6' , (A4)+
-    move.b   '4' , (A4)+
-    move.b   '8' , (A4)+
+    movea.l  min_int_string, A5              ; A5 = min_int_string
+write_min_int_loop:
+    move.b   (A5)+, D2
+    cmp.b    0, D2
+    beq      write_min_int_done
+    move.b   D2, (A4)+
+    add.l    1, D1                           ; num_len++
+    jmp      write_min_int_loop
+write_min_int_done:
     clr.b    (A4)
-    move.l   11, D1                          ; length of -2147483648
     rts
 
 print_spaces:
     cmp.l    0, D2
     ble      spaces_done
 space_print_loop:
-    cmp.l    1235, D0
+    cmp.l    D5, D0
     bge      error                           ; result buffer is full
     move.b   ' ' , (A3)+
     add.l    1, D0                           ; out_len++
@@ -293,7 +302,7 @@ print_buf_loop:
     move.b   (A4)+, D1
     cmp.b    0, D1
     beq      print_buf_done
-    cmp.l    1235, D0
+    cmp.l    D5, D0
     bge      error                           ; result buffer is full
     move.b   D1, (A3)+
     add.l    1, D0                           ; out_len++

@@ -154,4 +154,6 @@ export function renderGraph({
       ctx.stroke();
     });
   }
+
+  return scale;
 }

@@ -21,7 +21,8 @@
 :root {
   /* Все цвета темы живут только здесь. */
 
-  /* Тёплый крем и красный костюм Бэймакса (#c81c22 снят с кадра фильма). */
+  /* Тёплый крем и приглушённый кирпичный акцент: меньше нагрузки на глаза
+     при долгой работе, чем у насыщенного красного. */
   --bg-page: #f5eee8;
   --bg-soft: #fbf4ee;
   --bg-card: #fffdfb;
@@ -35,18 +36,18 @@
   --border-color: #ecdfd6;
   --border-strong: #dcc7b8;
 
-  --accent: #c81c22;
-  --accent-hover: #a9151b;
-  --accent-light: #d8282e;
-  --accent-soft: #f8e2e2;
+  --accent: #b0524a;
+  --accent-hover: #96433c;
+  --accent-light: #bd655c;
+  --accent-soft: #f6e7e3;
 
   --color-green: #2f8f6b;
   --color-red: var(--accent);
 
-  --graph-figure: rgba(var(--accent-rgb), 0.38);
+  --graph-figure: rgba(var(--accent-rgb), 0.32);
 
   /* Триплеты для полупрозрачных слоёв: rgba(var(--accent-rgb), 0.5). */
-  --accent-rgb: 200, 28, 34;
+  --accent-rgb: 176, 82, 74;
   --shadow-rgb: 74, 48, 34;
   --glow-rgb: 255, 251, 247;
 
@@ -57,7 +58,7 @@
 
   --shadow-card: 0 26px 50px -34px rgba(var(--shadow-rgb), 0.55);
   --shadow-soft: 0 14px 28px -22px rgba(var(--shadow-rgb), 0.45);
-  --shadow-accent: 0 16px 26px -16px rgba(var(--accent-rgb), 0.95);
+  --shadow-accent: 0 16px 26px -16px rgba(var(--accent-rgb), 0.55);
 
   --font-body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
 

@@ -1,0 +1,78 @@
+
+/* Хедер с ФИО одинаков на всех страницах: на каждую навигацию он должен
+   стоять на месте мгновенно, без повторного «вкатывания». */
+#header {
+  animation: none;
+}
+
+/* По канвасу кликают для выбора точки -- показываем это курсором. */
+#graph {
+  cursor: pointer;
+}
+
+.check-result {
+  max-width: 984px;
+  margin: 24px auto 0;
+  padding: 20px 24px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.check-result h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.check-result.is-hit h2 {
+  color: var(--color-green);
+}
+
+.check-result.is-miss h2,
+.check-result.is-error h2 {
+  color: var(--color-red);
+}
+
+.check-result p {
+  margin: 8px 0;
+}
+
+.point-result {
+  max-width: 420px;
+  margin: 12px 0;
+}
+
+.point-result th,
+.point-result td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#x-choices,
+#r-choices {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@media (max-width: 1015px) {
+  .check-result {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+}

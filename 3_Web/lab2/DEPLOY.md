@@ -8,7 +8,7 @@
 > На Helios политика mac_portacl запрещает обычным пользователям занимать порты ниже 16384, поэтому используются свободные порты из разрешённого диапазона: 24014 (HTTP для Apache) и 24015 (TCP для Java FastCGI).
 
 > [!important]
-> В командах указан логин `s365809` (ИСУ 365809). При использовании другим студентом замените его на свой в командах и в файле `src/httpd.conf`. В коде страницы-перехода в `src/redirect/index.html` используется плейсхолдер `sXXXXXX`, его в исходниках менять не требуется.
+> В командах используется SSH-алиас `helios` вместо полной строки `s365809@helios.cs.ifmo.ru`: он задан в `~/.ssh/config`. Как повторить -- в [helios.md](../../helios.md); без алиаса подставьте в команды полную строку со своим логином (для `scp` -- с флагом `-P 2222`). Логин `s365809` (ИСУ 365809) также указан в файле `src/httpd.conf`: при использовании другим студентом замените его на свой. В коде страницы-перехода в `src/redirect/index.html` используется плейсхолдер `sXXXXXX`, его в исходниках менять не требуется (в смысле формат менять не нужно, а ИСУ ваш подставлять конечно же нужно).
 
 ## Архитектура развёртывания
 
@@ -135,7 +135,7 @@ graph LR
 
 2. Создайте целевые каталоги на Helios:
    ```bash
-   ssh -p 2222 s365809@helios.cs.ifmo.ru 'mkdir -p ~/httpd-root/mutex-dir ~/public_html/web/common ~/public_html/web/lab2'
+   ssh helios 'mkdir -p ~/httpd-root/mutex-dir ~/public_html/web/common ~/public_html/web/lab2'
    ```
 
    > [!warning]
@@ -143,25 +143,31 @@ graph LR
 
 3. Скопируйте общие ресурсы в публичный каталог:
    ```bash
-   scp -P 2222 -r 3_Web/common/. s365809@helios.cs.ifmo.ru:public_html/web/common/
+   scp -r 3_Web/common/. helios:public_html/web/common/
    ```
+
+   > [!note]
+   > Common нужен странице-переходу и личному Apache: он отдаёт `htdocs/common` по пути `/common/`. Если правок в `3_Web/common/` с прошлой загрузки не было, шаг можно пропустить
 
 4. Скопируйте файлы приложения в `~/httpd-root/`:
    ```bash
-   scp -P 2222 -r 3_Web/lab2/src/build/. s365809@helios.cs.ifmo.ru:httpd-root/
+   scp -r 3_Web/lab2/src/build/. helios:httpd-root/
    ```
 
 5. Скопируйте страницу-переход в публичный каталог лабораторной:
    ```bash
-   scp -P 2222 -r 3_Web/lab2/src/redirect/build/. s365809@helios.cs.ifmo.ru:public_html/web/lab2/
+   scp -r 3_Web/lab2/src/redirect/build/. helios:public_html/web/lab2/
    ```
+
+   > [!note]
+   > Страница-переход не требуется по заданию ЛР2: это добровольное дополнение для удобного входа с `se.ifmo.ru`. Шаг можно пропустить вместе со сборкой `build.sh redirect`.
 
 ### 2. Настройка и запуск на Helios
 
 Подключитесь к серверу по SSH:
 
 ```bash
-ssh -p 2222 s365809@helios.cs.ifmo.ru
+ssh helios
 ```
 
 Внутри SSH-сессии выполните следующие действия:
@@ -177,8 +183,8 @@ ssh -p 2222 s365809@helios.cs.ifmo.ru
    nohup java -Xmx256m -DFCGI_PORT=24015 -jar ~/httpd-root/fcgi-bin/lab2-server.jar \
      > ~/httpd-root/fcgi.log 2>&1 &
    ```
-
-   Параметр `-Xmx256m` необходим, чтобы JVM не пыталась зарезервировать память исходя из всего объёма сервера (что приводит к ошибке `Could not reserve enough space for object heap`).
+   > [!warning]
+   > Параметр `-Xmx256m` необходим, чтобы JVM не пыталась зарезервировать память исходя из всего объёма сервера (что приводит к ошибке `Could not reserve enough space for object heap`). Упавшая JVM оставляет в текущем каталоге отчёты `hs_err_pid*.log` и `replay_pid*.log`, а ядро -- дамп памяти `java.core`: если такие файлы появились, какой-то java-процесс был запущен без ограничения памяти.
 
 3. Убедитесь, что процесс слушает порт:
    ```bash
@@ -200,7 +206,7 @@ ssh -p 2222 s365809@helios.cs.ifmo.ru
 
 1. На локальном компьютере откройте SSH-туннель:
    ```bash
-   ssh -p 2222 -L 24014:localhost:24014 s365809@helios.cs.ifmo.ru
+   ssh -L 24014:localhost:24014 helios
    ```
 
 2. Откройте в браузере страницу приложения: http://localhost:24014/

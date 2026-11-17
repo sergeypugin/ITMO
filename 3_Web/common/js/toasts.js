@@ -78,7 +78,7 @@ export function showRequestToast(message, isNetworkError) {
     variant: "error",
     title: isNetworkError ? "Сервер недоступен" : "Ошибка проверки",
     meta: isNetworkError
-      ? "Запрос не дошёл до FastCGI. Проверьте, что сервер запущен."
+      ? "Запрос не дошёл до сервера. Проверьте, что приложение запущено."
       : message,
   });
 }
